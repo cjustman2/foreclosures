@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ForeclosuresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="County">
+          <Key>
+            <PropertyRef Name="CountyID" />
+          </Key>
+          <Property Name="CountyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SiteAddress" Type="nvarchar(max)" />
+          <Property Name="CityCenter" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Listing">
+          <Key>
+            <PropertyRef Name="ListingID" />
+          </Key>
+          <Property Name="ListingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ListingAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+          <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="CountyID" Type="int" />
+          <Property Name="Image" Type="nvarchar(max)" />
+          <Property Name="Price" Type="nvarchar" MaxLength="50" />
+          <Property Name="BeenRemoved" Type="bit" />
+          <Property Name="IsNew" Type="bit" />
+          <Property Name="ScopeOfWork" Type="nvarchar(max)" />
+          <Property Name="PDFLink" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Listing_County">
+          <End Role="County" Type="Self.County" Multiplicity="0..1" />
+          <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyID" />
+            </Principal>
+            <Dependent Role="Listing">
+              <PropertyRef Name="CountyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Mark_All_As_Removed" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CountyID" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="ForeclosuresModelStoreContainer">
+          <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Listing" EntityType="Self.Listing" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Listing_County" Association="Self.FK_Listing_County">
+            <End Role="County" EntitySet="County" />
+            <End Role="Listing" EntitySet="Listing" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ForeclosuresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="County">
+          <Key>
+            <PropertyRef Name="CountyID" />
+          </Key>
+          <Property Name="CountyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SiteAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="County" ToRole="Listing" />
+          <Property Name="CityCenter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Listing">
+          <Key>
+            <PropertyRef Name="ListingID" />
+          </Key>
+          <Property Name="ListingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ListingAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="CountyID" Type="Int32" />
+          <NavigationProperty Name="County" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="Listing" ToRole="County" />
+          <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BeenRemoved" Type="Boolean" />
+          <Property Name="IsNew" Type="Boolean" />
+          <Property Name="ScopeOfWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PDFLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="ForeclosuresEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Counties" EntityType="Self.County" />
+          <EntitySet Name="Listings" EntityType="Self.Listing" />
+          <AssociationSet Name="FK_Listing_County" Association="ForeclosuresModel.FK_Listing_County">
+            <End Role="County" EntitySet="Counties" />
+            <End Role="Listing" EntitySet="Listings" />
+          </AssociationSet>
+          <FunctionImport Name="Batch_Listing_Delete">
+          <Parameter Name="CountyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Mark_All_As_Removed">
+          <Parameter Name="CountyID" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <Association Name="FK_Listing_County">
+          <End Type="ForeclosuresModel.County" Role="County" Multiplicity="0..1" />
+          <End Type="ForeclosuresModel.Listing" Role="Listing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyID" />
+            </Principal>
+            <Dependent Role="Listing">
+              <PropertyRef Name="CountyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ForeclosuresModelStoreContainer" CdmEntityContainer="ForeclosuresEntities">
+          <EntitySetMapping Name="Counties">
+            <EntityTypeMapping TypeName="ForeclosuresModel.County">
+              <MappingFragment StoreEntitySet="County">
+                <ScalarProperty Name="CityCenter" ColumnName="CityCenter" />
+                <ScalarProperty Name="SiteAddress" ColumnName="SiteAddress" />
+                <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+                <ScalarProperty Name="CountyName" ColumnName="CountyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Listings">
+            <EntityTypeMapping TypeName="ForeclosuresModel.Listing">
+              <MappingFragment StoreEntitySet="Listing">
+                <ScalarProperty Name="PDFLink" ColumnName="PDFLink" />
+                <ScalarProperty Name="ScopeOfWork" ColumnName="ScopeOfWork" />
+                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="BeenRemoved" ColumnName="BeenRemoved" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+                <ScalarProperty Name="ListingID" ColumnName="ListingID" />
+                <ScalarProperty Name="ListingAddress" ColumnName="ListingAddress" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Mark_All_As_Removed" FunctionName="ForeclosuresModel.Store.Mark_All_As_Removed" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

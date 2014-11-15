@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>izenda.itextsharp</id>
+    <version>4.0.3.0</version>
+    <title>iTextSharp, a .NET PDF library</title>
+    <authors>achingarev, blowagie, hildegoossens, psoares33, rafhens</authors>
+    <owners>achingarev, blowagie, hildegoossens, psoares33, rafhens</owners>
+    <licenseUrl>http://sourceforge.net/directory/license:agpl/</licenseUrl>
+    <projectUrl>http://sourceforge.net/projects/itextsharp</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Text is a PDF library that allows you to CREATE, ADAPT, INSPECT and MAINTAIN documents in the Portable Document Format (PDF)</description>
+    <copyright>Copyright(c) 2013, 1T3XT BVBA, iText Software Corp., iText Software BVBA</copyright>
+  </metadata>
+</package>

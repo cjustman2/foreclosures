@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="2.5">
+    <id>Magick.NET-Q16-AnyCPU</id>
+    <version>7.0.0.0007</version>
+    <title>Magick.NET-Q16-AnyCPU</title>
+    <authors>Dirk Lemstra</authors>
+    <owners>Dirk Lemstra</owners>
+    <licenseUrl>https://magick.codeplex.com/license</licenseUrl>
+    <projectUrl>https://magick.codeplex.com/documentation</projectUrl>
+    <iconUrl>http://download-codeplex.sec.s-msft.com/Download/SourceControlFileDownload.ashx?ProjectName=magick&amp;changeSetId=26438&amp;itemId=581988</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ImageMagick is a powerful image manipulation library that supports over 100 major file formats (not including sub-formats). With Magick.NET you can use ImageMagick without having to install ImageMagick on your server or desktop. Visit https://magick.codeplex.com/documentation before installing to help you decide the best version.</description>
+    <summary>A .NET API to the ImageMagick image-processing library for Desktop and Web.</summary>
+    <releaseNotes>Magick.NET linked with ImageMagick 7.0.0.0</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>ImageMagick Magick.NET</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Drawing" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

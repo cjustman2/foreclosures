@@ -1,0 +1,68 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+    
+        .meter {
+             background: none repeat scroll 0 0 #555;
+    border-radius: 25px;
+    box-shadow: 0 -1px 1px rgba(255, 255, 255, 0.3) inset;
+    height: 20px;
+    margin: 0 0 60px;
+    padding: 10px;
+    position: relative;
+    width: 490px;
+    float:right;
+        }
+        .orange{
+            background:#ff6a00;
+                border-radius: 20px 8px 8px 20px;
+    box-shadow: 0 2px 9px rgba(255, 255, 255, 0.3) inset, 0 -2px 6px rgba(0, 0, 0, 0.4) inset;
+    display: block;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width:0;
+   
+        }
+   

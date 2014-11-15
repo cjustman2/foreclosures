@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-JUB32PfdsTkiOqA248XQCSo-TBodu7U"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+<script src="~/Scripts/spin.js"></script>
+<script>
+    var meter = '<div id="" class="meter nostripes"><span class="orange" style=""></span></div>';
+    var markers = [];
+
+    $(function () {
+
+        GetAddresses();
+        $('#Counties').change(function () {
+            GetAddresses();        
+        });
+
+    });
+   
+    var geocoder;
+    var map;
+    function initialize(address) {
+
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+      
+                map.setCenter(results[0].geometry.location);
+            }
+
+        });
+        var myOptions = {
+           zoom: 10
+        
+        }
+     
+        map = new google.maps.Map(document.getElementById('inDIV'),myOptions);
+    }
+
+    
+
+    function PageScrape() {
+       // var target = document.getElementById('inDIV');
+        //var spinner = new Spinner().spin(target);
+       
+        var id = $('#Counties').val();
+        $.ajax({
+            url: '/Home/PageScrape',
+            type: 'Post',
+            data:{countyId:id},
+            success: function (result) {
+             
+                if (result.IsStarted)
+                {
+                    $(meter).attr('id', id).appendTo('#mainDiv');
+     
+                    Progress(id);
+                }
+               
+                for (var i = 0; i < result.Errors; i++)
+                {
+                    console.log(result.Errors[i].originator + ' - ' + result.Errors[i].exception.InnerException);
+                }
+            }, complete: function () {
+               // GetAddresses();
+               // spinner.stop();
+            }, beforeSend: function () {
+             
+              // ClearMap();
+
+              //  $('#removedListing').empty();
+            }, error: function () {
+               // spinner.stop();
+                alert('Error!');
+            }
+
+
+        });
+    }
+
+
+
+    function Progress(id) {
+        $.ajax({
+            url: '/Home/Progress',
+            data: { countyId: id },
+            type:'Post',
+            success: function (result) {
+                $('#'+id+' span').css('width', result + '%');
+                if (result < 100) {
+
+                    setTimeout(function () {
+                        Progress(id);
+                    }, 500);
+
+                } else {
+                    setTimeout(function () {
+                        $('#' + id).remove();
+                        GetAddresses();
+                    },1000);
+                }
+            }
+        });
+    }
+
+
+    function addMarker(result, pin) {
+       
+        var icon;
+
+        if (result.IsNew)
+            icon = 'http://www.google.com/mapfiles/markerN.png';
+        else
+            icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+
+        marker = new google.maps.Marker({
+            position: pin,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: result.ListingAddress,
+            icon: icon
+            
+        });
+  
+        markers.push(marker);
+
+        if (result.PDFLink != null) {
+            var infowindow = new google.maps.InfoWindow();
+            google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    var content = '<p>' + result.Price + '<div style="min-width:300px;"></p><a href="' + result.PDFLink + '" target="_blank">' + result.ListingAddress + '</a><br><a href="' + result.ScopeOfWork + '" target="_blank">Scope of Work</a><br><img src="' + result.Image + '"/></div>';
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+        }
+    }
+
+    function MapTINS()
+    {
+        
+        // Define the LatLng coordinates for the polygon's path.
+        var BORCHERTFIELD = [
+          new google.maps.LatLng(43.081512, -87.921085),
+       new google.maps.LatLng(43.081712, -87.928585),
+       new google.maps.LatLng(43.073112, -87.929185),
+        new google.maps.LatLng(43.072912, -87.921385)
+         
+        ];
+        borchertField = new google.maps.Polygon({
+            paths: BORCHERTFIELD,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        borchertField.setMap(map);
+   
+
+        var CENTURYCITY = [
+          new google.maps.LatLng(43.089711, -87.947086),
+       new google.maps.LatLng(43.089811, -87.958386),
+       new google.maps.LatLng(43.075212, -87.958386),
+        new google.maps.LatLng(43.075212, -87.947286)
+
+        ];
+        centuryCity = new google.maps.Polygon({
+            paths: CENTURYCITY,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        centuryCity.setMap(map);
+     
+        var STJOSEPHS = [
+         new google.maps.LatLng(43.071712, -87.967586),
+       new google.maps.LatLng(43.071712, -87.978587),
+       new google.maps.LatLng(43.075212, -87.978487),
+        new google.maps.LatLng(43.075112, -87.967286)
+        ]
+
+        stJoesephs = new google.maps.Polygon({
+            paths: STJOSEPHS,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        stJoesephs.setMap(map);
+
+        // var BURNHAMLAYTON = [
+        //new google.maps.LatLng(43.010314, -87.948085),
+
+
+        // ];
+
+        //burnhamLayton = new google.maps.Polygon({
+        //    paths: BORCHERTFIELD,
+        //    strokeColor: '#FF0000',
+        //    strokeOpacity: 0.8,
+        //    strokeWeight: 2,
+        //    fillColor: '#FF0000',
+        //    fillOpacity: 0.35
+        //});
+
+
+   
+       // burnhamLayton.setMap(map);
+    
+
+    }
+
+    function ClearMap() {
+
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+
+        }
+    }
+
+    function GetAddresses() {
+        var id = $('#Counties').val();
+        $.ajax({
+            url: '/Home/GetAddresses',
+            type: 'Post',
+            data: { countyId: id },
+            success: function (result) {
+                initialize(result.County);
+                for (var i = 0; i < result.List.length; i++) {
+                    var pin = new google.maps.LatLng(result.List[i].Latitude, result.List[i].Longitude);
+
+                 
+                        addMarker(result.List[i], pin);
+          
+
+                }
+                for (var i = 0; i < result.removedList.length; i++) {
+                   
+                    $('#removedListing').append('<p>'+result.removedList[i].ListingAddress+'</p>')
+
+                }
+
+                $('#numberOfListings').html(result.List.length + ' Listings');
+
+                if (id == 1 || id == 4)
+                    MapTINS();
+
+       
+            }, beforeSend: function () {
+                ClearMap();
+                $('#removedListing').empty();
+            }, complete: function () { }
+
+
+        });
+    }
+
+   // google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+
+ <div id="mainDiv" style="z-index: 100; position: absolute; margin: 10px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;">@Html.DropDownList("Counties")<span style="margin:0 20px"><a href="javascript:void(0)" onclick="$('#removedDiv').toggle()">Removed Listings</a></span></div>
+<div id="removedDiv" style="display:none; z-index : 100; position: absolute; margin: 50px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;"><div id="numberOfListings"></div><input type="button" value="Update Addresses" onclick="    PageScrape()" /><div id="removedListing"></div></div>
+        <div id="inDIV" style="width:100%; height:100%"> 
+        </div>
+
+
+
+

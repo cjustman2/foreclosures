@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Aspose.OCR</id>
+    <version>2.1.0</version>
+    <title>Aspose.OCR for .NET</title>
+    <authors>Aspose</authors>
+    <owners>Aspose</owners>
+    <licenseUrl>http://www.aspose.com/corporate/purchase/end-user-license-agreement.aspx</licenseUrl>
+    <projectUrl>http://www.aspose.com/categories/.net-components/aspose.ocr-for-.net/default.aspx</projectUrl>
+    <iconUrl>http://www.aspose.com/images/products/dotnet/Aspose.OCR_128x128.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Aspose.OCR for .NET is a character and optical mark recognition component built to allow developers to add OCR and OMR functionality in their ASP.NET web applications, web services and Windows applications. It provides a simple set of classes for controlling character and optical mark recognition</description>
+    <summary>Aspose.OCR for .NET is a character and optical mark recognition component built to allow developers to add OCR and OMR functionality in their .NET applications</summary>
+    <releaseNotes>Improvements and Changes
+
+	New Features
+	OCR-30703 Text blocks detection
+
+	Enhancements
+	OCR-33837 Latest version cannot correctly perform OCR on the sample provided with Aspose Examples Dashboard
+	OCR-33814 Incorrect recognition of numbers
+	OCR-33804 IRecognizedTextPartInfo does not return the found part type
+	OCR-33803 Improve text and picture blocks processing algorithm
+	OCR-33687 Incorrect results returned by OCR
+	OCR-33664 Improve time taken to extract the text from an image
+	OCR-33588 Unable to perform OCR on Arial 32pt Text
+
+	Exceptions
+	OCR-33820 Engine.Text.PartsInfo[].CharactersBox isn't set
+	OCR-33796 OcrException: "Error occurred during recognition." "Index was out of range. Must be non-negative and less than the size of the collection."
+	OCR-28970 OutOfMemoryException
+
+	Public API and Backwards Incompatible Changes
+
+	The following is a list of any changes made to the public API such as added, renamed, removed or deprecated members as well as any non-backward compatible change made to Aspose.OCR for .NET. If you have concerns about any change listed, please raise it on the Aspose.OCR support forum.
+
+	Added APIs:
+	Interface Aspose.OCR.IRecognizedPartInfo: Interface that presents information about part of the recognized text. Could be text or detected picture block.
+	Property Aspose.OCR.IRecognizedPartInfo.Box: Gets the rectangular area where the detected block (with text or picture) is shown on the image. Coordinates starts with the upper left corner of the image.
+
+	Removed APIs:
+	Property Aspose.OCR.IRecognizedTextPartInfo.Box: This property was moved to new upper level interface IRecognizedPartInfo.</releaseNotes>
+    <copyright>� Aspose 2002-2014. All Rights Reserved.</copyright>
+    <tags>OCR OCRText ExtractText Aspose.OCR</tags>
+  </metadata>
+</package>
