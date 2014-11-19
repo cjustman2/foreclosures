@@ -35,7 +35,7 @@ namespace foreclosures.Classes
             List<Listing> addresses = new List<Listing>();
 
 
-            string table = tables[1].Trim().Substring(0, tables[1].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>");
+            string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>").Replace("</tbody>>", "</tbody>");
 
             XDocument doc = XDocument.Parse(table);
 
@@ -56,18 +56,19 @@ namespace foreclosures.Classes
 
 
 
-                        List<XElement> hrefs = tds[0].Descendants("a").ToList();
+                        List<XElement> hrefs = tds[1].Descendants("a").ToList();
                         if (hrefs.Count > 1)
                         {
                             pdf = baseurl + hrefs[0].Attribute("href").Value;
                             scope = baseurl + hrefs[1].Attribute("href").Value;
                         }
 
-                        XElement ahref = tds[0].Descendants("a").First();
+                       
                   
-                        price = tds[4].Value;
+                        price = tds[5].Value;
+                        image = baseurl+ tds[0].Descendants("img").First().Attribute("src").Value;
 
-                        addresses.Add(new Listing { ListingAddress = ahref.Value + " Milwaukee, WI", PDFLink = pdf, ScopeOfWork = scope, Image = image, Price = price });
+                        addresses.Add(new Listing { ListingAddress = hrefs[0].Value + " Milwaukee, WI", PDFLink = pdf, ScopeOfWork = scope, Image = image, Price = price });
 
                     }
                 }
