@@ -6,7 +6,7 @@
 <link href="~/Content/Site.css" rel="stylesheet" />
 <script src="~/Scripts/spin.js"></script>
 <script>
-    var meter = '<div id="" class="meter nostripes"><span class="orange" style=""></span></div>';
+    var meter = '<div id="" class="meterHolder"><h4></h4><div class="meter nostripes"><span class="orange" style=""></span></div></div>';
     var markers = [];
 
     $(function () {
@@ -45,6 +45,7 @@
         //var spinner = new Spinner().spin(target);
        
         var id = $('#Counties').val();
+        var county = $('#Counties :selected').text();
         $.ajax({
             url: '/Home/PageScrape',
             type: 'Post',
@@ -54,14 +55,11 @@
                 if (result.IsStarted)
                 {
                     $(meter).attr('id', id).appendTo('#mainDiv');
-     
+                    $('#' + id + ' h4').html(county);
                     Progress(id);
                 }
                
-                for (var i = 0; i < result.Errors; i++)
-                {
-                    console.log(result.Errors[i].originator + ' - ' + result.Errors[i].exception.InnerException);
-                }
+             
             }, complete: function () {
                // GetAddresses();
                // spinner.stop();

@@ -45,7 +45,7 @@ namespace foreclosures.Classes
 
 
                     string ad = text.InnerHtml.Replace("<br>", "").Substring(text.InnerHtml.IndexOf("Property:") + 1);
-                    string address = ad.Substring(0, ad.IndexOf("Attorney:")).Replace("(BOTH PARCELS SOLD TOGETHER PER ATTORNEY)", "");
+                    string address = ad.Substring(0, ad.IndexOf("Attorney:")).Replace("(BOTH PARCELS SOLD TOGETHER PER ATTORNEY)", "").Replace("54817Parcel #00893833 5210", "54817");
 
                     if (!string.IsNullOrWhiteSpace(address))
                     {

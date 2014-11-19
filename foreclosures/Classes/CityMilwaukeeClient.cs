@@ -83,13 +83,9 @@ namespace foreclosures.Classes
                 }
 
             }
-            catch (Exception ex)
+            catch 
             {
-               Classes.Errors e = new Classes.Errors();
-                e.originator = pageData;
-                e.exception = ex;
-
-                SiteErrors.Add(e);
+                throw;
             }
             
             

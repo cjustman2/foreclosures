@@ -81,11 +81,19 @@ namespace foreclosures.Controllers
 
                 List<Listing> listings = new List<Listing>();
 
-                listings = webPage.ParseAddresses(responseData);
+                bool hasErrors = false;
+                try
+                {
+                    listings = webPage.ParseAddresses(responseData);
+                }
+                catch (Exception ex)
+                {
+                    hasErrors = true;
+                }
 
                 Google google = new Google();
 
-                if (listings.Count > 0)
+                if (listings.Count > 0 && !hasErrors)
                 {
 
                     var db = new ForeclosuresEntities();
@@ -102,8 +110,14 @@ namespace foreclosures.Controllers
 
                         if (!string.IsNullOrWhiteSpace(listing.ListingAddress))
                         {
+                            try
+                            {
+                                google.GeoCodeAddress(listing);
+                            }
+                            catch (Exception ex) 
+                            {
 
-                            google.GeoCodeAddress(listing);
+                            }
 
                             if (!string.IsNullOrWhiteSpace(listing.Latitude))
                             {

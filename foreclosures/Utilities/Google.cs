@@ -15,22 +15,30 @@ namespace foreclosures.Utilities
         {
            if(!string.IsNullOrWhiteSpace(listing.ListingAddress)){
 
+               try { 
             var requestUri = string.Format("http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false", Uri.EscapeDataString(listing.ListingAddress));
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
-            if (response != null) 
-            { 
-            var xdoc = XDocument.Load(response.GetResponseStream());
-
-            var result = xdoc.Element("GeocodeResponse").Element("result");
-            if (result != null)
+            if (response != null)
             {
-                var locationElement = result.Element("geometry").Element("location");
-                listing.Latitude = locationElement.Element("lat").Value.ToString();
-                listing.Longitude = locationElement.Element("lng").Value.ToString();
+                var xdoc = XDocument.Load(response.GetResponseStream());
+
+                var result = xdoc.Element("GeocodeResponse").Element("result");
+                if (result != null)
+                {
+                    var locationElement = result.Element("geometry").Element("location");
+                    listing.Latitude = locationElement.Element("lat").Value.ToString();
+                    listing.Longitude = locationElement.Element("lng").Value.ToString();
+                }
+
             }
-        }
+
+            }catch
+               {
+                throw;
+               }
+        
 
            }
 
