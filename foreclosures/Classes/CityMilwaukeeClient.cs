@@ -21,7 +21,7 @@ namespace foreclosures.Classes
             this.addresses = new List<Listing>();
             this.SiteErrors = new List<Errors>();
 
-            this.PageUrl = url += "11-11-14";
+            this.PageUrl = url += "12-18-14";
         }
 
 
