@@ -37,7 +37,7 @@ namespace foreclosures.Classes
 
             string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>").Replace("</tbody>>", "</tbody>");
 
-            XDocument doc = XDocument.Parse(table);
+            XDocument doc = XDocument.Parse(table.Replace("&", "&amp;"));
 
             int i = 0;
             List<XElement> l = doc.Descendants("tr").ToList();

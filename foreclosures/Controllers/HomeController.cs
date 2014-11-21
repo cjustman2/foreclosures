@@ -10,6 +10,7 @@ using foreclosures.Utilities;
 using foreclosures.Classes;
 using System.Threading.Tasks;
 
+
 namespace foreclosures.Controllers
 {
     public class HomeController : Controller
@@ -45,8 +46,16 @@ namespace foreclosures.Controllers
         [HttpPost]
         public JsonResult PageScrape(int countyId)
         {
-         
+            List<Listing> allremoved = new List<Listing>();
+            List<Listing> allListingByCounty = new List<Listing>();
+            List<Listing> listings = new List<Listing>();
             bool isStarted = false;
+            string responseData = "";
+
+
+
+
+
             if (!Globals.tasks.ContainsKey(countyId))
             {
                 
@@ -59,27 +68,28 @@ namespace foreclosures.Controllers
                     {
 
 
-                        WebPageStrategy webPage = WebPageFactory.GetWebPage(countyId, context);
-                      
+                WebPageStrategy webPage = WebPageFactory.GetWebPage(countyId, context);           
                 webPage.countyId = countyId;
 
-                List<Listing> allremoved = new List<Listing>();
-                List<Listing> allListingByCounty = new List<Listing>();
-                string responseData = "";
+          
+               
                 try
                 {
-                   responseData = PageParser.WebPageHelper.GetWebPage(webPage.PageUrl);
+                    WebPageHelper pageHelper = new WebPageHelper();
+                    if (pageHelper.CanCrawlPage(webPage.PageUrl))
+                    {
+                        responseData = pageHelper.GetWebPage(webPage.PageUrl);
+                    }
                 }
                 catch (Exception ex)
                 {
                     webPage.SiteErrors.Add(new Errors(){originator = webPage.PageUrl, exception = new Exception(){}});
                 }
 
+
+
                 if (!string.IsNullOrWhiteSpace(responseData) && webPage.SiteErrors.Count == 0)
                 { 
-
-
-                List<Listing> listings = new List<Listing>();
 
                 bool hasErrors = false;
                 try
@@ -91,7 +101,14 @@ namespace foreclosures.Controllers
                     hasErrors = true;
                 }
 
+
+
+
+
                 Google google = new Google();
+                ThrottleAPIHits api = ThrottleAPIHits.Instance;
+                api.allowedHitsPerSecond = 5;
+                api.seconds = 1;
 
                 if (listings.Count > 0 && !hasErrors)
                 {
@@ -112,12 +129,21 @@ namespace foreclosures.Controllers
                         {
                             try
                             {
+                                while (!api.AddHit(countyId))
+                                {
+                                    System.Threading.Thread.Sleep(200);
+                                }
+
+
                                 google.GeoCodeAddress(listing);
                             }
                             catch (Exception ex) 
                             {
 
                             }
+
+
+
 
                             if (!string.IsNullOrWhiteSpace(listing.Latitude))
                             {
@@ -158,7 +184,6 @@ namespace foreclosures.Controllers
 
                             }
 
-                            System.Threading.Thread.Sleep(150);
                         }
 
                     }

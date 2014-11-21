@@ -37,12 +37,12 @@ namespace foreclosures.Classes
                 string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
 
 
-                
 
 
-                string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "");
 
-                XDocument doc = XDocument.Parse(table);
+                string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("<hr />", "").Replace("diams", "").Replace("<br />", "");
+
+                XDocument doc = XDocument.Parse(table.Replace("&", "&amp;"));
 
 
                 double i = 0;

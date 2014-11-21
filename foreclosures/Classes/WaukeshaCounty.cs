@@ -183,7 +183,7 @@ namespace foreclosures.Classes
                 List<tessnet2.Word> result = ocr.DoOCR(image, new System.Drawing.Rectangle());
 
               
-                Regex regex = new Regex(@"^WI?\d{5}(?:[-\s]\d{4})?");
+                Regex regex = new Regex(@"^?\d{5}(?:[-\s]\d{4})?");
                 int j;
 
                 for (int i = 0; i < result.Count; i++)

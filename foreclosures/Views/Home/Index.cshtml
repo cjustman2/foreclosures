@@ -56,7 +56,8 @@
                 {
                     $(meter).attr('id', id).appendTo('#mainDiv');
                     $('#' + id + ' h4').html(county);
-                    Progress(id);
+
+                    GetProgress(id);
                 }
                
              
@@ -79,7 +80,8 @@
 
 
 
-    function Progress(id) {
+    function GetProgress(id) {
+        var currentid = $('#Counties').val();
         $.ajax({
             url: '/Home/Progress',
             data: { countyId: id },
@@ -89,13 +91,17 @@
                 if (result < 100) {
 
                     setTimeout(function () {
-                        Progress(id);
+                        GetProgress(id);
                     }, 500);
 
                 } else {
                     setTimeout(function () {
                         $('#' + id).remove();
-                        GetAddresses();
+
+                        if(id == currentid)
+                          {
+                             GetAddresses();
+                          }
                     },1000);
                 }
             }

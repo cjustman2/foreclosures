@@ -7,221 +7,178 @@ using System.IO;
 
 namespace foreclosures.Utilities
 {
-    public class PageParser
+    public class WebPageHelper
     {
-      
-        public List<Listing> ClientListing(string pageData)
+        const string USER_AGENT = "BrewTownSoftwareLLC_Bot";
+
+        public string GetRootLevelUrl(string fullUrl)
         {
-
-
-
-            string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-            string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-
-            List<Listing> addresses = new List<Listing>();
-
-
-            string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "");
-
-            XDocument doc = XDocument.Parse(table);
-
-      
-            int i = 0;
-
-            foreach (XElement element in doc.Descendants("tr"))
+            string rootLevelUrl = null;
+            try
             {
 
-                if (i > 0)
+                Uri uri;
+
+
+                Uri.TryCreate(fullUrl, UriKind.Absolute, out uri);
+                
+                    rootLevelUrl = uri.GetLeftPart(UriPartial.Authority);
+                
+            }
+            catch
+            {
+                throw;
+            }
+
+            return "http://" + rootLevelUrl;
+        }
+
+        public bool CanCrawlPage(string pageToCrawl)
+        {
+             
+          
+
+           List<string> disallowedUrls = new List<string>();
+           List<string> agents = new List<string>();
+           string rootLevelUrl = null;
+           bool canCrawl = true;
+           string robotTxt = null;
+
+
+           try
+           {
+               rootLevelUrl = GetRootLevelUrl(pageToCrawl);
+         
+
+               try
+               {
+                   try
+                   {
+                       robotTxt = GetWebPage(rootLevelUrl + "/robots.txt");
+                   }
+                   catch (FileNotFoundException fe) 
+                   {
+                       return true;
+                   }
+                   catch (Exception ex)
+                   {
+                       return false;
+                   }
+
+
+
+
+                   List<string> robotsList = System.Text.RegularExpressions.Regex.Split(robotTxt, @"(?=User-agent:)").Where(x => x != string.Empty).ToList();
+
+                   foreach (string robot in robotsList)
+                   {
+                       List<string> entries = robot.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                       List<string> useragent = entries.Where(x => x.Contains("User-agent")).ToList();
+                       List<string> disallows = entries.Where(x => x.Contains("Disallow")).ToList();
+
+                       foreach (string agent in useragent)
+                       {
+                           int start = agent.IndexOf(":") + 1;
+
+                           string user = agent.Substring(start);
+
+                           if (user.Trim() == "*" || user.Trim() == USER_AGENT)
+                           {
+
+                               foreach (string disallow in disallows)
+                               {
+                                   int starting = disallow.IndexOf(":") + 1;
+
+                                   string notallowed = disallow.Substring(starting);
+
+                                   disallowedUrls.Add(notallowed.Trim());
+                               }
+                           }
+                       }
+
+                   }
+
+         
+
+                   foreach (string file in disallowedUrls)
+                   {
+                  
+                       if(pageToCrawl.ToLower().Contains(file))
+                       {
+                           canCrawl = false;
+                       }
+                   }
+
+
+
+
+
+               }
+               catch (Exception ex)
+               {
+
+               }
+
+
+           }
+           catch (Exception ex)
+           {
+
+           }
+
+
+
+
+            return canCrawl;
+        }
+
+
+
+        public string GetWebPage(string url)
+        {
+            string responseData = "";
+
+            try
+            {
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.AllowAutoRedirect = false;
+                webRequest.UserAgent = USER_AGENT;
+                webRequest.Timeout = 10000;
+
+
+                using (var webResponse = (HttpWebResponse)webRequest.GetResponse())
                 {
 
-                    List<XElement> tds = element.Descendants("td").ToList();
-                    if (tds.Count > 1)
+                    if ((int)webResponse.StatusCode >= 300 && (int)webResponse.StatusCode <= 399)
                     {
-                        string file = "http://city.milwaukee.gov"; ;
-                        List<XElement> hrefs = tds[1].Descendants("a").ToList();
-                        if (hrefs.Count > 1)
-                        {
-                            file += hrefs[0].Attribute("href").Value;
-                        }
 
-                        XElement ahref = tds[1].Descendants("a").First();
+                       // string uriString = webResponse.Headers["Location"];
 
-
-                        addresses.Add(new Listing { ListingAddress = ahref.Value + " Milwaukee, WI", Image = file });
-
+                        throw new FileNotFoundException("File was not Fount.");
                     }
-                }
-
-                i++;
-            }
-
-            return addresses;
-        }
-
-
-        public List<Listing> ExtendedListing(string pageData)
-        {
-            string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-            string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-
-            List<Listing> addresses = new List<Listing>();
-
-
-            string table = tables[1].Trim().Substring(0, tables[1].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>");
-
-            XDocument doc = XDocument.Parse(table);
-
-            int i = 0;
-
-            foreach (XElement element in doc.Descendants("tr"))
-            {
-
-                if (i > 0)
-                {
-
-                    List<XElement> tds = element.Descendants("td").ToList();
-                    if (tds.Count > 1)
+                    else
                     {
-                        string file = "http://city.milwaukee.gov"; ;
-                        List<XElement> hrefs = tds[0].Descendants("a").ToList();
-                        if (hrefs.Count > 1)
+                        using (Stream stream = webResponse.GetResponseStream())
                         {
-                            file += hrefs[0].Attribute("href").Value;
+                            StreamReader reader = new StreamReader(stream, System.Text.Encoding.UTF8);
+                            responseData = reader.ReadToEnd();
                         }
-
-                        XElement ahref = tds[0].Descendants("a").First();
-
-
-                        addresses.Add(new Listing { ListingAddress = ahref.Value + " Milwaukee, WI", Image = file });
-
-                    }
-                }
-
-                i++;
-            }
-
-            return addresses;
-        }
-
-        public List<Listing> DodgeCounty(string pageData)
-        {
-
-            int start = pageData.IndexOf("<div id=\"ctl00_content_Screen\">");
-            string html = pageData.Substring(start);
-
-            List<Listing> addresses = new List<Listing>();
-
-            string table = html.Trim().Substring(0, html.IndexOf("</div>") + 6).Replace("<hr>", "").Replace("&nbsp;", "");
-
-
-            XDocument doc = XDocument.Parse(table);
-
-
-
-            foreach (XElement element in doc.Descendants("ul"))
-            {
-
-                List<XElement> lis = element.Descendants("li").ToList();
-
-                for (int i = 0; i < lis.Count; i++)
-                {
-                    List<XElement> hrefs = lis[i].Descendants("a").ToList();
-
-                    if (hrefs.Count > 0)
-                    {
-                        string file = "http://www.co.dodge.wi.us/";
-                        int end = lis[i].Value.ToString().IndexOf(')') + 1;
-                        string addr = lis[i].Value.Remove(0, end).Trim();
-                        int dash = addr.LastIndexOf('-');
-
-                        Listing address = new Listing();
-                        if (dash > 4)
-                        {
-                            address.ListingAddress = addr.Substring(0, dash);
-                           
-                        }
-                        else
-                        {
-                            address.ListingAddress = addr;
-                        }
-
-                     
-
-                        file += hrefs[0].Attribute("href").Value;
-                        address.Image = file;
-                        addresses.Add(address);
                     }
 
-                   
                 }
-           
+
             }
-            return addresses;
-        }
-
-
-
-        public List<Listing> WashingtonCounty(string pageData)
-        {
-            int start = pageData.IndexOf("<div id=\"sales\" class=\"editable\">");
-            string html = pageData.Substring(start);
-
-            List<Listing> addresses = new List<Listing>();
-
-            string table = html.Trim().Substring(0, html.IndexOf("</div>") + 6).Replace("<hr>", "");
-
-
-            XDocument doc = XDocument.Parse(table);
-
-            int i = 0;
-
-            foreach (XElement element in doc.Descendants("p"))
+            catch
             {
-
-
-                List<XElement> hrefs = element.Descendants("a").ToList();
-                if (hrefs.Count > 0)
-                {
-                    string file = "http://www.washingtoncountysheriffwi.org"; ;
-
-
-                    file += hrefs[0].Attribute("href").Value;
-                    addresses.Add(new Listing { ListingAddress = hrefs[0].Value });
-
-                }
-
+                throw;
             }
 
-            return addresses;
+
+            return responseData;
         }
-
-
-        public static class WebPageHelper
-        {
-            public static string GetWebPage(string url)
-            {
-                string responseData = "";
-                try
-                {
-                    HttpWebRequest webRequest = default(HttpWebRequest);
-                    webRequest = (HttpWebRequest)System.Net.WebRequest.Create(url);
-                    StreamReader responseReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
-                    responseData = responseReader.ReadToEnd().Trim();
-                    responseReader.Close();
-                }
-                catch (Exception e)
-                {
-                    throw;
-                }
-
-                return responseData;
-            }
-            
-        }
-
     }
+
+
+
 }
