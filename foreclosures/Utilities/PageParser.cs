@@ -30,21 +30,45 @@ namespace foreclosures.Utilities
                 throw;
             }
 
-            return "http://" + rootLevelUrl;
+            return rootLevelUrl;
         }
 
+
+        public string GetUrlAbsolutePath(string fullUrl)
+        {
+            string absolutePath = null;
+            try
+            {
+
+                Uri uri;
+
+
+                Uri.TryCreate(fullUrl, UriKind.Absolute, out uri);
+
+                absolutePath = uri.AbsolutePath;
+
+            }
+            catch
+            {
+                throw;
+            }
+
+            return absolutePath;
+        }
         public bool CanCrawlPage(string pageToCrawl)
         {
-             
-          
 
+            
+
+            List<string> allowedUrls = new List<string>();
            List<string> disallowedUrls = new List<string>();
            List<string> agents = new List<string>();
            string rootLevelUrl = null;
            bool canCrawl = true;
            string robotTxt = null;
 
-
+         
+  
            try
            {
                rootLevelUrl = GetRootLevelUrl(pageToCrawl);
@@ -56,9 +80,24 @@ namespace foreclosures.Utilities
                    {
                        robotTxt = GetWebPage(rootLevelUrl + "/robots.txt");
                    }
-                   catch (FileNotFoundException fe) 
+                   catch (FileNotFoundException fe)
                    {
                        return true;
+                   }
+                   catch (WebException we)
+                   {
+                       var resp = (HttpWebResponse)we.Response;
+                       if (resp.StatusCode == HttpStatusCode.NotFound)
+                       {
+
+                           return true;
+
+                       }
+                       else
+                       {
+
+                           return false;
+                       }
                    }
                    catch (Exception ex)
                    {
@@ -76,6 +115,16 @@ namespace foreclosures.Utilities
 
                        List<string> useragent = entries.Where(x => x.Contains("User-agent")).ToList();
                        List<string> disallows = entries.Where(x => x.Contains("Disallow")).ToList();
+                       List<string> allows = entries.Where(x => x.Contains("Allow")).ToList();
+
+                       foreach (string allow in allows)
+                       {
+                           int starting = allow.IndexOf(":") + 1;
+
+                           allowedUrls.Add(allow.Substring(starting).Trim());
+                       }
+
+
 
                        foreach (string agent in useragent)
                        {
@@ -90,26 +139,28 @@ namespace foreclosures.Utilities
                                {
                                    int starting = disallow.IndexOf(":") + 1;
 
-                                   string notallowed = disallow.Substring(starting);
-
-                                   disallowedUrls.Add(notallowed.Trim());
+                                   disallowedUrls.Add(disallow.Substring(starting).Trim());
                                }
                            }
                        }
 
                    }
 
-         
 
-                   foreach (string file in disallowedUrls)
+                   string absolute = GetUrlAbsolutePath(pageToCrawl);
+                   if(!allowedUrls.Contains("/"))
                    {
-                  
-                       if(pageToCrawl.ToLower().Contains(file))
-                       {
-                           canCrawl = false;
-                       }
-                   }
 
+                           foreach (string file in disallowedUrls)
+                           {
+                  
+                               if(pageToCrawl.ToLower().Contains(file) && !allowedUrls.Contains(absolute))
+                               {
+                                   canCrawl = false;
+                               }
+                           }
+
+                   }
 
 
 
@@ -155,7 +206,7 @@ namespace foreclosures.Utilities
 
                        // string uriString = webResponse.Headers["Location"];
 
-                        throw new FileNotFoundException("File was not Fount.");
+                        throw new FileNotFoundException("You are being redirected.");
                     }
                     else
                     {
