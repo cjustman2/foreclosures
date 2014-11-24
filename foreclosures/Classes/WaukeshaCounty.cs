@@ -27,8 +27,8 @@ namespace foreclosures.Classes
    
         public Listing listing = null;
         public  List<Listing> addresses { get; set; }
-        public List<Errors> SiteErrors { get; set; }
-        public int countyId { get; set; }
+        public County county { get; set; }
+
 
         public System.Web.HttpContext currentContext { get; set; }
       
@@ -36,7 +36,6 @@ namespace foreclosures.Classes
         public WaukeshaCounty(string url, System.Web.HttpContext context)
         {
             this.PageUrl = url;
-            this.SiteErrors = new List<Errors>();
             this.addresses = new List<Listing>();
             this.currentContext = context;
         }
@@ -49,37 +48,29 @@ namespace foreclosures.Classes
         public List<Listing> ParseAddresses(string pageData)
         {
 
-
-
-            
-
-            HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
-
-            // There are various options, set as needed
-            htmlDoc.OptionFixNestedTags = true;
-
-            // filePath is a path to a file containing the html
-            // htmlDoc.Load(pageData);
-
-            htmlDoc.LoadHtml(pageData); // to load from a string (was htmlDoc.LoadXML(xmlString)
-
-            // ParseErrors is an ArrayList containing any errors from the Load statement
-            if (htmlDoc.ParseErrors != null && htmlDoc.ParseErrors.Count() > 0)
+            try
             {
-                // Handle any parse errors as required
 
-            }
-            else
-            {
-               int total = htmlDoc.DocumentNode.SelectNodes("//div[@id='ctl00_MainContent_ContentBlock1']/p/a").ToList().Count;
+                HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
+
+               
+                htmlDoc.OptionFixNestedTags = true;
+
+
+                htmlDoc.LoadHtml(pageData); 
+
+             
+
+                int total = htmlDoc.DocumentNode.SelectNodes("//div[@id='ctl00_MainContent_ContentBlock1']/p/a").ToList().Count;
                 double percent = (100.0 / total) / 2.0;
                 int i = 0;
                 foreach (HtmlNode link in htmlDoc.DocumentNode.SelectNodes("//div[@id='ctl00_MainContent_ContentBlock1']/p/a"))
                 {
-                    Globals.tasks[countyId] += percent;
+                    SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+
                     if (i > 25)
                     {
-                    
+
                         string file = "http://www.waukeshacounty.gov" + link.Attributes["href"].Value;
 
                         int last = link.Attributes["href"].Value.LastIndexOf('/');
@@ -92,25 +83,24 @@ namespace foreclosures.Classes
 
 
 
-                        bool isDownloaded = false;
+                       
                         using (WebClient client = new WebClient())
                         {
 
                             try
                             {
                                 client.DownloadFile(file, filePath);
-                                isDownloaded = true;
+                            
                             }
-                            catch (Exception ex)
+                            catch (WebException we)
                             {
-                                Classes.Errors e = new Errors() { exception = ex, originator = file};
-                                SiteErrors.Add(e);
+                                SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + we.Message, county.CountyName));
                             }
 
 
                         }
 
-                        if (isDownloaded)
+                        try
                         {
                             string address = null;
                             Utilities.Utilities util = new Utilities.Utilities();
@@ -123,7 +113,7 @@ namespace foreclosures.Classes
 
                                 string imagePath = currentContext.Server.MapPath("/PdfToImages" + name + ".png");
 
-                                util.GetPdfThumbnail(filePath, imagePath);
+                                util.PdfToImage(filePath, imagePath);
 
                                 address = ReadImage(imagePath);
                             }
@@ -133,24 +123,28 @@ namespace foreclosures.Classes
                             if (!string.IsNullOrWhiteSpace(address))
                             {
 
-                            listing = new Listing()
-                            {
+                                listing = new Listing()
+                                {
 
-                                Image = "",
-                                ListingAddress = address,
-                                PDFLink = "/Downloads" + fileName,
-                                ScopeOfWork = ""
-                            };
+                                    Image = "",
+                                    ListingAddress = address,
+                                    PDFLink = "/Downloads" + fileName,
+                                    ScopeOfWork = ""
+                                };
 
-                            
+
                                 addresses.Add(listing);
                             }
 
 
-
                         }
-                            
-                    
+                        catch(Exception ex)
+                        {
+                            SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                        }
+                        
+
+
 
                     }
 
@@ -158,8 +152,13 @@ namespace foreclosures.Classes
 
                     i++;
                 }
-
             }
+            catch 
+            { 
+                throw;
+            }
+
+            
             return addresses;
         }
 
@@ -201,20 +200,16 @@ namespace foreclosures.Classes
                         code += result[j].Text.Replace("of property: ", "");
                         if (string.IsNullOrWhiteSpace(code))
                         {
-                            Classes.Errors e = new Errors() { exception = new Exception() { } };
-                            SiteErrors.Add(e);
+                            SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0}) Address not found.", county.CountyName));
                         }
                         break;
 
                     }
                 }
             }
-            catch (Exception exception)
+            catch 
             {
-                Classes.Errors e = new Errors();
-                e.exception = exception;
-                e.originator = imagePath;
-                SiteErrors.Add(e);
+                throw;
             }
 
             return code;

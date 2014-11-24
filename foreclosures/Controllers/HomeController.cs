@@ -43,6 +43,20 @@ namespace foreclosures.Controllers
             return Json(new{List = listings, removedList = removed, County = county.CityCenter });
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpPost]
         public JsonResult PageScrape(int countyId)
         {
@@ -53,23 +67,28 @@ namespace foreclosures.Controllers
             string responseData = "";
 
 
+            SingletonTaskLogger tasks = SingletonTaskLogger.Instance;
+            SingletonErrorLogger errors = SingletonErrorLogger.Instance;
 
-
-
-            if (!Globals.tasks.ContainsKey(countyId))
+            if (!tasks.ContainsKey(countyId))
             {
                 
                 isStarted = true;
+                tasks.AddNewTask(countyId);
 
-                Globals.tasks.Add(countyId, 0);
                 var context = System.Web.HttpContext.Current;
 
                 Task.Factory.StartNew(() =>
                     {
+                        County currentCounty = null;
+                        using(var db = new ForeclosuresEntities())
+                        {
+                            currentCounty = db.Counties.Find(countyId);
+                        }
 
 
-                WebPageStrategy webPage = WebPageFactory.GetWebPage(countyId, context);           
-                webPage.countyId = countyId;
+                        WebPageStrategy webPage = WebPageFactory.GetWebPage(countyId, context);
+                        webPage.county = currentCounty;
 
           
                
@@ -80,25 +99,30 @@ namespace foreclosures.Controllers
                     {
                         responseData = pageHelper.GetWebPage(webPage.PageUrl);
                     }
+                    else
+                    {
+                        errors.AddError(countyId, string.Format("({0}) Can not crawl site", currentCounty.CountyName));
+                    }
                 }
                 catch (Exception ex)
                 {
-                    webPage.SiteErrors.Add(new Errors(){originator = webPage.PageUrl, exception = new Exception(){}});
-                }
+                    string.Format("({0})" + ex.Message, currentCounty.CountyName);
+                } 
 
 
 
-                if (!string.IsNullOrWhiteSpace(responseData) && webPage.SiteErrors.Count == 0)
+                if (!string.IsNullOrWhiteSpace(responseData))
                 { 
 
-                bool hasErrors = false;
+             
                 try
                 {
                     listings = webPage.ParseAddresses(responseData);
                 }
                 catch (Exception ex)
                 {
-                    hasErrors = true;
+                    errors.AddError(countyId, string.Format("({0})" + ex.Message, currentCounty.CountyName));
+                 
                 }
 
 
@@ -106,11 +130,11 @@ namespace foreclosures.Controllers
 
 
                 Google google = new Google();
-                ThrottleAPIHits api = ThrottleAPIHits.Instance;
-                api.allowedHitsPerSecond = 5;
+                SingletonThrottleAPIHits api = SingletonThrottleAPIHits.Instance;
+                api.allowedHitsPerSecond = 4;
                 api.seconds = 1;
 
-                if (listings.Count > 0 && !hasErrors)
+                if (listings.Count > 0)
                 {
 
                     var db = new ForeclosuresEntities();
@@ -119,11 +143,11 @@ namespace foreclosures.Controllers
 
                     allListingByCounty = db.Listings.Where(x => x.CountyID == countyId).ToList();
 
-                    double i = (100.0 / listings.Count) / 2.0;
+                    double percent = (100.0 / listings.Count) / 2.0;
                     foreach (Listing listing in listings)
                     {
-                        Globals.tasks[countyId] = Globals.tasks[countyId] + i;
 
+                        tasks.AddTaskProgress(countyId, percent);
 
                         if (!string.IsNullOrWhiteSpace(listing.ListingAddress))
                         {
@@ -137,15 +161,19 @@ namespace foreclosures.Controllers
 
                                 google.GeoCodeAddress(listing);
                             }
-                            catch (Exception ex) 
+                            catch (WebException we)
                             {
-
+                                errors.AddError(countyId, string.Format("({0})" + we.Message, currentCounty.CountyName));
+                            }
+                            catch (Exception ex)
+                            {
+                                errors.AddError(countyId, string.Format("({0})" + ex.Message, currentCounty.CountyName));
                             }
 
 
 
 
-                            if (!string.IsNullOrWhiteSpace(listing.Latitude))
+                            try
                             {
 
                                 listing.ModifiedDate = DateTime.Now;
@@ -154,8 +182,7 @@ namespace foreclosures.Controllers
                                 exists = allListingByCounty.FirstOrDefault(x => x.ListingAddress.ToLower().Replace(" ", "") == listing.ListingAddress.ToLower().Replace(" ", ""));
                                 if (exists != null)
                                 {
-
-                                    exists.IsNew = false;
+                                   
                                     exists.Latitude = listing.Latitude;
                                     exists.Longitude = listing.Longitude;
                                     exists.Image = listing.Image;
@@ -183,6 +210,10 @@ namespace foreclosures.Controllers
                                 exists = null;
 
                             }
+                            catch (Exception ex)
+                            {
+                                errors.AddError(countyId, string.Format("({0})" + ex.Message, currentCounty.CountyName));
+                            }
 
                         }
 
@@ -194,23 +225,36 @@ namespace foreclosures.Controllers
 
                     foreach (Listing listing in allremoved)
                     {
-                        listing.IsNew = false;
-                        db.Listings.Attach(listing);
-                        db.Entry(listing).State = System.Data.Entity.EntityState.Modified;
+                        try
+                        {
+                            listing.IsNew = false;
+                            db.Listings.Attach(listing);
+                            db.Entry(listing).State = System.Data.Entity.EntityState.Modified;
 
-                        db.SaveChanges();
+                            db.SaveChanges();
+                        }
+                        catch (System.Data.Entity.Validation.DbEntityValidationException dbex)
+                        {
+                            errors.AddError(countyId, string.Format("({0})"+ dbex.Message, currentCounty.CountyName));
+                        }
                     }
 
                     db.Database.Connection.Close();
 
 
                 }
+                else
+                {
+                    errors.AddError(countyId, string.Format("({0}) No Listings Found", currentCounty.CountyName));
                 }
 
-              Globals.tasks.Remove(countyId);
+                }
+
+          
+              tasks.DeleteTask(countyId);
 
                     });
-
+                
               
             }
 
@@ -222,7 +266,17 @@ namespace foreclosures.Controllers
 
         public ActionResult Progress(int countyId)
         {
-            return Json(Globals.tasks.Keys.Contains(countyId) ? Globals.tasks[countyId] : 100, JsonRequestBehavior.DenyGet);
+            
+            double percent = SingletonTaskLogger.Instance.ContainsKey(countyId) ? SingletonTaskLogger.Instance.GetTaskProgress(countyId) : 100;
+            List<string> errors = new List<string>();
+            errors = SingletonErrorLogger.Instance.GetErrorsById(countyId);
+
+            if (errors.Count > 0)
+            {
+                string i = "";
+            }
+          
+            return Json(new { Complete = percent, Errors = errors }, JsonRequestBehavior.DenyGet);
         }
     }
 }

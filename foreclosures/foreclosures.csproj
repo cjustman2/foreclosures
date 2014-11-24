@@ -254,7 +254,7 @@
     <Compile Include="Classes\CityMilwaukeeClient.cs" />
     <Compile Include="Classes\CityMilwaukeeExtended.cs" />
     <Compile Include="Classes\DodgeCounty.cs" />
-    <Compile Include="Classes\Globals.cs" />
+    <Compile Include="Utilities\Loggers.cs" />
     <Compile Include="Classes\WebPageStrategy.cs" />
     <Compile Include="Classes\SawyerCounty.cs" />
     <Compile Include="Classes\WashingtonCounty.cs" />
@@ -292,12 +292,11 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\Google.cs" />
     <Compile Include="Utilities\PageParser.cs" />
-    <Compile Include="Utilities\ThrottleAPIHits.cs" />
+    <Compile Include="Utilities\SingletonSafeThrottleAPIHits.cs" />
     <Compile Include="Utilities\Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -339,6 +338,7 @@
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %285%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %286%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %287%29.pubxml" />
+    <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %288%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

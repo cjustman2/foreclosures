@@ -13,6 +13,7 @@
 
         GetAddresses();
         $('#Counties').change(function () {
+            $('#errors').empty();
             GetAddresses();        
         });
 
@@ -68,7 +69,7 @@
              
               // ClearMap();
 
-              //  $('#removedListing').empty();
+               $('#errors').empty();
             }, error: function () {
                // spinner.stop();
                 alert('Error!');
@@ -87,8 +88,8 @@
             data: { countyId: id },
             type:'Post',
             success: function (result) {
-                $('#'+id+' span').css('width', result + '%');
-                if (result < 100) {
+                $('#'+id+' span').css('width', result.Complete + '%');
+                if (result.Complete < 100) {
 
                     setTimeout(function () {
                         GetProgress(id);
@@ -103,6 +104,10 @@
                              GetAddresses();
                           }
                     },1000);
+                }
+                for (var i = 0; i < result.Errors.length; i++)
+                {
+                    $('<p style="color:red">' + result.Errors[i] + '</p>').appendTo('#errors');
                 }
             }
         });
@@ -273,7 +278,8 @@
 
 
  <div id="mainDiv" style="z-index: 100; position: absolute; margin: 10px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;">@Html.DropDownList("Counties")<span style="margin:0 20px"><a href="javascript:void(0)" onclick="$('#removedDiv').toggle()">Removed Listings</a></span></div>
-<div id="removedDiv" style="display:none; z-index : 100; position: absolute; margin: 50px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;"><div id="numberOfListings"></div><input type="button" value="Update Addresses" onclick="    PageScrape()" /><div id="removedListing"></div></div>
+
+<div id="removedDiv" style="display:none; z-index : 100; position: absolute; margin: 50px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;"><div id="numberOfListings"></div><input type="button" value="Update Addresses" onclick="    PageScrape()" /><div id="removedListing"></div><div id="errors"></div></div>
         <div id="inDIV" style="width:100%; height:100%"> 
         </div>
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using System.Web;
 
 namespace foreclosures.Classes
 {
@@ -9,14 +10,15 @@ namespace foreclosures.Classes
     {
         public string PageUrl { get; set; }
         public List<Listing> addresses { get; set; }
-        public List<Errors> SiteErrors { get; set; }
-        public int countyId { get; set; }
+     
+        public County county { get; set; }
+        private HttpContext context { get; set; }
 
-        public CityMilwaukeeExtended(string url)
+        public CityMilwaukeeExtended(string url, HttpContext context)
         {
             this.PageUrl = url;
             this.addresses = new List<Listing>();
-            this.SiteErrors = new List<Errors>();
+            this.context = context;
         }
 
 
@@ -26,55 +28,76 @@ namespace foreclosures.Classes
 
         public List<Listing> ParseAddresses(string pageData)
         {
-
-            string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-            string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-
             List<Listing> addresses = new List<Listing>();
 
-
-            string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>").Replace("</tbody>>", "</tbody>");
-
-            XDocument doc = XDocument.Parse(table.Replace("&", "&amp;"));
-
-            int i = 0;
-            List<XElement> l = doc.Descendants("tr").ToList();
-            double percent = (100.0 / l.Count()) / 2.0;
-            foreach (XElement element in doc.Descendants("tr"))
+            try
             {
-                Globals.tasks[countyId] += percent;
-                if (i > 0)
+
+                string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
+
+                string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
+
+
+
+
+
+                string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("</tbody", "</tbody>").Replace("</tbody>>", "</tbody>");
+
+                XDocument doc = XDocument.Parse(table.Replace("&", "&amp;"));
+
+                int i = 0;
+                List<XElement> l = doc.Descendants("tr").ToList();
+                double percent = (100.0 / l.Count()) / 2.0;
+                foreach (XElement element in doc.Descendants("tr"))
                 {
-
-                    List<XElement> tds = element.Descendants("td").ToList();
-                    if (tds.Count > 1)
+                    try
                     {
-                        string baseurl = "http://city.milwaukee.gov";
-                        string pdf = "", scope = "", image = "", price = "";
 
-
-
-                        List<XElement> hrefs = tds[1].Descendants("a").ToList();
-                        if (hrefs.Count > 1)
+                        SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                        if (i > 0)
                         {
-                            pdf = baseurl + hrefs[0].Attribute("href").Value;
-                            scope = baseurl + hrefs[1].Attribute("href").Value;
+
+                            List<XElement> tds = element.Descendants("td").ToList();
+                            if (tds.Count > 1)
+                            {
+                                string baseurl = "http://city.milwaukee.gov";
+                                string pdf = "", scope = "", image = "", price = "";
+
+
+
+                                List<XElement> hrefs = tds[1].Descendants("a").ToList();
+                                if (hrefs.Count > 1)
+                                {
+                                    pdf = baseurl + hrefs[0].Attribute("href").Value;
+                                    scope = baseurl + hrefs[1].Attribute("href").Value;
+                                }
+
+
+
+                                price = tds[5].Value;
+                                image = baseurl + tds[0].Descendants("img").First().Attribute("src").Value;
+
+                                addresses.Add(new Listing { ListingAddress = hrefs[0].Value + " Milwaukee, WI", PDFLink = pdf, ScopeOfWork = scope, Image = image, Price = price });
+
+                            }
                         }
-
-                       
-                  
-                        price = tds[5].Value;
-                        image = baseurl+ tds[0].Descendants("img").First().Attribute("src").Value;
-
-                        addresses.Add(new Listing { ListingAddress = hrefs[0].Value + " Milwaukee, WI", PDFLink = pdf, ScopeOfWork = scope, Image = image, Price = price });
-
                     }
+                    catch (Exception ex)
+                    {
+                        SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                    }
+
+                    i++;
                 }
 
-                i++;
+
             }
+            catch
+            {
+                throw;
+            }
+
+
 
             return addresses;
         }

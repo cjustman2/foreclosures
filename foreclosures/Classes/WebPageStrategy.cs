@@ -12,9 +12,9 @@ namespace foreclosures.Classes
         string PageUrl { get; set; }
   
         List<Listing> addresses { get; set; }
-        int countyId { get; set; }
+        County county { get; set; }
         List<Listing> ParseAddresses(string pageData);
-        List<Errors> SiteErrors { get; set; }
+     
     }
 
 

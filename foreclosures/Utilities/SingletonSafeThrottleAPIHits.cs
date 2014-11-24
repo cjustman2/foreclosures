@@ -5,7 +5,7 @@ using System.Web;
 
 namespace foreclosures.Utilities
 {
-    public class ThrottleAPIHits
+    public class SingletonThrottleAPIHits
     {
 
                     public int hits { get; private set; }
@@ -14,12 +14,12 @@ namespace foreclosures.Utilities
             private DateTime currentSecond = DateTime.Now;
             public List<string> logger = new List<string>();
 
-    private static volatile ThrottleAPIHits instance;
+    private static volatile SingletonThrottleAPIHits instance;
    private static object syncRoot = new Object();
 
-   private ThrottleAPIHits() { hits = 1; }
+   private SingletonThrottleAPIHits() { hits = 1; }
 
-   public static ThrottleAPIHits Instance
+   public static SingletonThrottleAPIHits Instance
    {
       get
       {
@@ -28,7 +28,7 @@ namespace foreclosures.Utilities
             lock (syncRoot)
             {
                if (instance == null)
-                  instance = new ThrottleAPIHits();
+                  instance = new SingletonThrottleAPIHits();
             }
          }
 
@@ -53,8 +53,9 @@ namespace foreclosures.Utilities
                     {
                         if (DateTime.Now > currentSecond.AddSeconds(seconds))
                         {
-
+                            
                             currentSecond = DateTime.Now;
+                            logger.Add(thread + ": " + currentSecond);
                             hits = 1;
                             return true;
                         }

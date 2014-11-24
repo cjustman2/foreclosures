@@ -20,8 +20,7 @@ namespace foreclosures.Utilities
 
             var request = WebRequest.Create(requestUri);
             var response = request.GetResponse();
-            if (response != null)
-            {
+          
                 var xdoc = XDocument.Load(response.GetResponseStream());
 
                 var result = xdoc.Element("GeocodeResponse").Element("result");
@@ -32,7 +31,7 @@ namespace foreclosures.Utilities
                     listing.Longitude = locationElement.Element("lng").Value.ToString();
                 }
 
-            }
+            
 
             }catch
                {

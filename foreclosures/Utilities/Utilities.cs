@@ -21,7 +21,7 @@ namespace foreclosures.Utilities
 {
     public class Utilities
     {
-        public void GetPdfThumbnail(string sourcePdfFilePath, string destinationPngFilePath)
+        public void PdfToImage(string sourcePdfFilePath, string destinationPngFilePath)
         {
             // Use GhostscriptSharp to convert the pdf to a png
             GhostscriptWrapper.GenerateOutput(sourcePdfFilePath, destinationPngFilePath,
@@ -37,14 +37,13 @@ namespace foreclosures.Utilities
                     },
                     Resolution = new Size
                     {
-                        // Render at 72x72 dpi
+                        
                         Height = 150,
                         Width = 150
                     },
                     Size = new GhostscriptPageSize
                     {
-                        // The dimentions of the incoming PDF must be
-                        // specified. The example PDF is US Letter sized.
+                       
                         Native = GhostscriptPageSizes.letter
                     }
                 }
@@ -60,29 +59,37 @@ namespace foreclosures.Utilities
         {
             StringBuilder text = new StringBuilder();
 
-
-            if (System.IO.File.Exists(filePath))
+            try
             {
 
-                iTextSharp.text.pdf.PdfReader pdfReader1 = new iTextSharp.text.pdf.PdfReader(filePath);
-
-                for (int page = 1; page < pdfReader1.NumberOfPages + 1; page++)
+                if (System.IO.File.Exists(filePath))
                 {
-                    iTextSharp.text.pdf.PdfReader pdfReader = new iTextSharp.text.pdf.PdfReader(filePath);
-                    iTextSharp.text.pdf.parser.ITextExtractionStrategy strategy = new iTextSharp.text.pdf.parser.SimpleTextExtractionStrategy();
-                    string currentText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy);
 
-                    currentText =
-            Encoding.UTF8.GetString(Encoding.Convert(
-                Encoding.Default,
-                Encoding.UTF8,
-                Encoding.Default.GetBytes(currentText)));
+                    iTextSharp.text.pdf.PdfReader pdfReader1 = new iTextSharp.text.pdf.PdfReader(filePath);
 
-                    text.Append(currentText);
-                    pdfReader.Close();
+                    for (int page = 1; page < pdfReader1.NumberOfPages + 1; page++)
+                    {
+                        iTextSharp.text.pdf.PdfReader pdfReader = new iTextSharp.text.pdf.PdfReader(filePath);
+                        iTextSharp.text.pdf.parser.ITextExtractionStrategy strategy = new iTextSharp.text.pdf.parser.SimpleTextExtractionStrategy();
+                        string currentText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(pdfReader, page, strategy);
+
+                        currentText =
+                Encoding.UTF8.GetString(Encoding.Convert(
+                    Encoding.Default,
+                    Encoding.UTF8,
+                    Encoding.Default.GetBytes(currentText)));
+
+                        text.Append(currentText);
+                        pdfReader.Close();
+                    }
+
                 }
-
             }
+            catch
+            {
+                throw;
+            }
+
             return text.ToString();
         }
     }
