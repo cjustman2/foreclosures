@@ -1,0 +1,278 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-JUB32PfdsTkiOqA248XQCSo-TBodu7U"></script>
+
+<script src="~/Scripts/spin.js"></script>
+<script>
+
+    $(function () {
+
+        GetAddresses();
+        $('#Counties').change(function () {
+            initialize();
+            GetAddresses();
+            
+        });
+
+    });
+
+    var geocoder;
+    var map;
+    function initialize() {
+
+        var county = document.getElementById("Counties");
+        county = county.options[county.selectedIndex].value;
+        var address;
+
+        if (county == 1 || county == 4)
+            address = 'Milwaukee, WI';
+        if (county == 2)
+            address = 'West Bend, WI';
+        if (county == 3)
+            address = 'Waukesha, WI';
+        if (county == 5)
+            address = 'Juneau, WI';
+        if (county == 6)
+            address = 'Hayward, WI';
+
+        geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+      
+                map.setCenter(results[0].geometry.location);
+            }
+
+        });
+        var myOptions = {
+           zoom: 10
+        
+        }
+     
+        map = new google.maps.Map(document.getElementById('inDIV'),myOptions);
+    }
+
+    
+
+    function PageScrape() {
+        var target = document.getElementById('inDIV');
+        var spinner = new Spinner().spin(target);
+       
+        var id = $('#Counties').val();
+        $.ajax({
+            url: '/Home/PageScrape',
+            type: 'Post',
+            data:{countyId:id},
+            success: function (result) {
+  
+                initialize();
+
+                for (var i = 0; i < result.newList.length; i++)
+                {
+                    var pin = new google.maps.LatLng(result.newList[i].Latitude, result.newList[i].Longitude);
+               
+                        if (result.newList[i].IsNew)
+                          addNewMarker(result.newList[i], pin);
+                        else
+                          addMarker(result.newList[i], pin);
+                    
+                }
+
+                            for (var i = 0; i < result.removedList.length; i++) {
+
+                                $('#removedListing').append('<p>' + result.removedList[i].ListingAddress + '</p>')
+
+                            }
+
+                $('#numberOfListings').html(result.newList.length + ' Listings');
+
+                if (id == 1 || id == 4)
+                    MapTINS();
+
+
+            }, complete: function () {
+
+                spinner.stop();
+            }, beforeSend: function () {
+
+                $('#removedListing').empty();
+            }
+
+
+        });
+    }
+
+    function addNewMarker(result,pin){
+        var icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
+        marker = new google.maps.Marker({
+            position: pin,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: result.ListingAddress,
+            icon: icon
+        });
+
+        if (result.Image != null) {
+            var infowindow = new google.maps.InfoWindow();
+            google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    var content = '<a href="' + result.Image + '" target="_blank">' + result.ListingAddress + '</a>';
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+        }
+    }
+
+    function addMarker(result,pin) {
+     
+        marker = new google.maps.Marker({
+            position: pin,
+            map: map,
+            animation: google.maps.Animation.DROP,
+            title: result.ListingAddress
+        });
+      
+        if (result.Image != null) {
+            var infowindow = new google.maps.InfoWindow();
+            google.maps.event.addListener(marker, 'click', (function (marker) {
+                return function () {
+                    var content = '<a href="' + result.Image + '" target="_blank">' + result.ListingAddress + '</a>';
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            })(marker));
+        }
+    }
+
+    function MapTINS()
+    {
+        
+        // Define the LatLng coordinates for the polygon's path.
+        var BORCHERTFIELD = [
+          new google.maps.LatLng(43.081512, -87.921085),
+       new google.maps.LatLng(43.081712, -87.928585),
+       new google.maps.LatLng(43.073112, -87.929185),
+        new google.maps.LatLng(43.072912, -87.921385)
+         
+        ];
+        borchertField = new google.maps.Polygon({
+            paths: BORCHERTFIELD,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        borchertField.setMap(map);
+   
+
+        var CENTURYCITY = [
+          new google.maps.LatLng(43.089711, -87.947086),
+       new google.maps.LatLng(43.089811, -87.958386),
+       new google.maps.LatLng(43.075212, -87.958386),
+        new google.maps.LatLng(43.075212, -87.947286)
+
+        ];
+        centuryCity = new google.maps.Polygon({
+            paths: CENTURYCITY,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        centuryCity.setMap(map);
+     
+        var STJOSEPHS = [
+         new google.maps.LatLng(43.071712, -87.967586),
+       new google.maps.LatLng(43.071712, -87.978587),
+       new google.maps.LatLng(43.075212, -87.978487),
+        new google.maps.LatLng(43.075112, -87.967286)
+        ]
+
+        stJoesephs = new google.maps.Polygon({
+            paths: STJOSEPHS,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+
+        stJoesephs.setMap(map);
+
+        // var BURNHAMLAYTON = [
+        //new google.maps.LatLng(43.010314, -87.948085),
+
+
+        // ];
+
+        //burnhamLayton = new google.maps.Polygon({
+        //    paths: BORCHERTFIELD,
+        //    strokeColor: '#FF0000',
+        //    strokeOpacity: 0.8,
+        //    strokeWeight: 2,
+        //    fillColor: '#FF0000',
+        //    fillOpacity: 0.35
+        //});
+
+
+   
+       // burnhamLayton.setMap(map);
+    
+
+    }
+
+    function GetAddresses() {
+        var id = $('#Counties').val();
+        $.ajax({
+            url: '/Home/GetAddresses',
+            type: 'Post',
+            data: { countyId: id },
+            success: function (result) {
+
+                for (var i = 0; i < result.newList.length; i++) {
+                    var pin = new google.maps.LatLng(result.newList[i].Latitude, result.newList[i].Longitude);
+
+                    if (result.newList[i].IsNew)
+                        addNewMarker(result.newList[i], pin);
+                    else
+                        addMarker(result.newList[i], pin);
+
+                }
+                for (var i = 0; i < result.removedList.length; i++) {
+                   
+                    $('#removedListing').append('<p>'+result.removedList[i].ListingAddress+'</p>')
+
+                }
+
+                $('#numberOfListings').html(result.newList.length + ' Listings');
+
+                if (id == 1 || id == 4)
+                    MapTINS();
+            }, beforeSend: function () {
+
+                $('#removedListing').empty();
+            }
+
+
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+
+ <div style="z-index: 100; position: absolute; margin: 10px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;">@Html.DropDownList("Counties")<span style="margin:0 20px"><a href="javascript:void(0)" onclick="$('#removedDiv').toggle()">Removed Listings</a></span></div>
+<div id="removedDiv" style="display:none; z-index : 100; position: absolute; margin: 50px 0px 0px 150px; background-color: #fff; border: 1px #000 Solid; padding: 5px;"><div id="numberOfListings"></div><input type="button" value="Update Addresses" onclick="    PageScrape()" /><div id="removedListing"></div></div>
+        <div id="inDIV" style="width:100%; height:100%"> 
+        </div>
+
+
+
+

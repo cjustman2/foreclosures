@@ -1,0 +1,41 @@
+﻿<div ng-controller="Dashboard" id="mainDiv">
+    <select id="Counties" ng-show="counties.length > 0"
+            ng-model="county"
+            ng-init="GetCounties()"
+            ng-change="GetCities(county); GetAddressesByCounty(county); GetAttributes(county)">
+        <option ng-repeat="county in counties"
+                value="{{county.CountyID}}">
+            {{county.CountyName}}
+        </option>
+    </select>
+
+
+    <select id="Cities" ng-show="countyCities.length > 0"
+            ng-model="city"
+            ng-change="GetAddressesByCity(city)">
+        <option value="" ng-if="countyCities.length > 1">Filter By City</option>
+        <option ng-repeat="city in countyCities"
+                value="{{city.cityId}}">
+            {{city.cityName}}
+        </option>
+
+    </select>
+
+
+    <select id="Attributes" ng-show="attributes.length > 0"
+            ng-model="attribute"
+            ng-change="GetAddressesByAttribute(attribute)">
+        <option value="" ng-if="attributes.length > 1">Filter By Attribute</option>
+        <option ng-repeat="att in attributes"
+                value="{{att.AttributeID}}">
+            {{att.AttributeName}}
+        </option>
+
+    </select>
+
+    <span style="margin:0 20px"><a href="javascript:void(0)" onclick="$('#removedDiv').toggle()">More Info.</a></span>
+</div>
+
+
+
+<div id="removedDiv" style="display:none; z-index : 100; position: absolute; margin: 100px 0px 0px 120px; background-color: #fff; border: 1px #000 Solid; padding: 5px;"><div id="numberOfListings"></div><input type="button" value="Update Addresses" onclick="    PageScrape()" /><div id="removedListing"></div><div id="errors"></div></div>

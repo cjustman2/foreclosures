@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAX4TDzv5FAU26gKnGLFHv3AAAAAACAAAAAAAQZgAAAAEAACAAAAB/1+X8i7bZU+O7WWckA7qGZC5E5tZnI11hfRrvdjaugwAAAAAOgAAAAAIAACAAAACpo4XU+72jMbikw3pcnyqAgf0NDGIrfRdRvlfT02a9NBAAAAC/2icgh39b8TYz3JoD1eRpQAAAAOEGVZ8D5/wcrpWnc9/RjpIWzmD7HqFz+hC6LygISFEUYMJFNKf0cLu1Rfm+aevtg9i+sBJS6HxKVgN60cpOnr0=</EncryptedPassword>
+    <_PublishTargetUrl>C:\Users\user\Desktop\publish</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/Antlr3.Runtime.dll">
+      <publishTime>10/20/2014 21:44:27</publishTime>
+    </File>
+    <File Include="bin/bcmail-jdk15-1.44.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/bcprov-jdk15-1.44.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/commons-logging.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.dll">
+      <publishTime>10/20/2014 21:44:31</publishTime>
+    </File>
+    <File Include="bin/EntityFramework.SqlServer.dll">
+      <publishTime>10/20/2014 21:44:31</publishTime>
+    </File>
+    <File Include="bin/fontbox-1.8.2.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/foreclosures.dll">
+      <publishTime>11/19/2014 22:49:46</publishTime>
+    </File>
+    <File Include="bin/Ghostscript.NET.dll">
+      <publishTime>11/09/2014 18:15:50</publishTime>
+    </File>
+    <File Include="bin/GhostscriptSharp.dll">
+      <publishTime>11/09/2014 18:39:25</publishTime>
+    </File>
+    <File Include="bin/HtmlAgilityPack.dll">
+      <publishTime>10/26/2014 22:48:11</publishTime>
+    </File>
+    <File Include="bin/icu4j-3.8.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Beans.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Charsets.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Corba.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Core.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Jdbc.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Management.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Media.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Misc.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Naming.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Remoting.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Security.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.SwingAWT.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Text.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.Util.dll">
+      <publishTime>11/06/2014 22:49:26</publishTime>
+    </File>
+    <File Include="bin/IKVM.OpenJDK.XML.API.dll">
+      <publishTime>11/06/2014 22:49:27</publishTime>
+    </File>
+    <File Include="bin/IKVM.Runtime.dll">
+      <publishTime>11/06/2014 22:49:27</publishTime>
+    </File>
+    <File Include="bin/IKVM.Runtime.JNI.dll">
+      <publishTime>11/06/2014 22:49:27</publishTime>
+    </File>
+    <File Include="bin/itextsharp.dll">
+      <publishTime>11/06/2014 21:12:59</publishTime>
+    </File>
+    <File Include="bin/jempbox-1.8.2.dll">
+      <publishTime>11/06/2014 22:49:27</publishTime>
+    </File>
+    <File Include="bin/junit.dll">
+      <publishTime>11/06/2014 22:49:27</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
+      <publishTime>10/20/2014 21:44:35</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.EntityFramework.dll">
+      <publishTime>10/20/2014 21:44:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AspNet.Identity.Owin.dll">
+      <publishTime>10/20/2014 21:44:35</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.dll">
+      <publishTime>10/20/2014 21:44:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Host.SystemWeb.dll">
+      <publishTime>10/20/2014 21:44:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Cookies.dll">
+      <publishTime>10/20/2014 21:44:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.dll">
+      <publishTime>10/20/2014 21:44:37</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Facebook.dll">
+      <publishTime>10/20/2014 21:44:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Google.dll">
+      <publishTime>10/20/2014 21:44:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.MicrosoftAccount.dll">
+      <publishTime>10/20/2014 21:44:39</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.OAuth.dll">
+      <publishTime>10/20/2014 21:44:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Owin.Security.Twitter.dll">
+      <publishTime>10/20/2014 21:44:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>10/20/2014 21:44:25</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>10/20/2014 21:44:26</publishTime>
+    </File>
+    <File Include="bin/Owin.dll">
+      <publishTime>10/20/2014 21:44:36</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>10/20/2014 21:44:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>10/20/2014 21:44:25</publishTime>
+    </File>
+    <File Include="bin/System.Web.Optimization.dll">
+      <publishTime>10/20/2014 21:44:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>10/20/2014 21:44:23</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>10/20/2014 21:44:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>10/20/2014 21:44:24</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>10/20/2014 21:44:24</publishTime>
+    </File>
+    <File Include="bin/tessnet2_32.dll">
+      <publishTime>11/09/2014 13:42:22</publishTime>
+    </File>
+    <File Include="bin/WebGrease.dll">
+      <publishTime>10/20/2014 21:44:27</publishTime>
+    </File>
+    <File Include="bin/x64/liblept168.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="bin/x64/libtesseract302.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="bin/x86/liblept168.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="bin/x86/libtesseract302.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>11/13/2014 18:22:56</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>11/18/2014 22:24:02</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.eot">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="Model1.edmx.diagram">
+      <publishTime>10/21/2014 21:23:49</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>11/09/2014 18:39:26</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>10/20/2014 21:44:14</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.js">
+      <publishTime>10/20/2014 21:44:16</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.js">
+      <publishTime>10/20/2014 21:44:16</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.10.2.min.map">
+      <publishTime>10/20/2014 21:44:16</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.js">
+      <publishTime>10/20/2014 21:44:39</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.min.js">
+      <publishTime>10/20/2014 21:44:39</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.js">
+      <publishTime>10/20/2014 21:44:40</publishTime>
+    </File>
+    <File Include="Scripts/jquery.validate.unobtrusive.min.js">
+      <publishTime>10/20/2014 21:44:40</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>10/20/2014 21:44:25</publishTime>
+    </File>
+    <File Include="Scripts/respond.js">
+      <publishTime>10/20/2014 21:44:28</publishTime>
+    </File>
+    <File Include="Scripts/respond.min.js">
+      <publishTime>10/20/2014 21:44:28</publishTime>
+    </File>
+    <File Include="Scripts/spin.js">
+      <publishTime>10/22/2014 21:32:39</publishTime>
+    </File>
+    <File Include="Scripts/_references.js">
+      <publishTime>10/22/2014 21:32:35</publishTime>
+    </File>
+    <File Include="Views/Account/ExternalLoginConfirmation.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/ExternalLoginFailure.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/Login.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/Manage.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/Register.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/_ChangePasswordPartial.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/_ExternalLoginsListPartial.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/_RemoveAccountPartial.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Account/_SetPasswordPartial.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Home/About.cshtml">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="Views/Home/Contact.cshtml">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>11/18/2014 22:30:58</publishTime>
+    </File>
+    <File Include="Views/Shared/Error.cshtml">
+      <publishTime>10/20/2014 21:44:29</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout.cshtml">
+      <publishTime>10/26/2014 18:25:34</publishTime>
+    </File>
+    <File Include="Views/Shared/_LoginPartial.cshtml">
+      <publishTime>10/20/2014 21:44:30</publishTime>
+    </File>
+    <File Include="Views/Web.config">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>10/20/2014 21:44:06</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>11/19/2014 22:49:48</publishTime>
+    </File>
+    <File Include="x64/liblept168.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="x64/libtesseract302.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="x86/liblept168.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+    <File Include="x86/libtesseract302.dll">
+      <publishTime>11/07/2014 19:32:25</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForeclosuresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="County">
+    <Key>
+      <PropertyRef Name="CountyID" />
+    </Key>
+    <Property Name="CountyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountyName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SiteAddress" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Listing">
+    <Key>
+      <PropertyRef Name="ListingID" />
+    </Key>
+    <Property Name="ListingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ListingAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="CountyID" Type="int" />
+    <Property Name="Image" Type="nvarchar(max)" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+    <Property Name="BeenRemoved" Type="bit" />
+    <Property Name="IsNew" Type="bit" />
+  </EntityType>
+  <Association Name="FK_Listing_County">
+    <End Role="County" Type="Self.County" Multiplicity="0..1" />
+    <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="County">
+        <PropertyRef Name="CountyID" />
+      </Principal>
+      <Dependent Role="Listing">
+        <PropertyRef Name="CountyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Mark_All_As_Removed" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CountyID" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="ForeclosuresModelStoreContainer">
+    <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Listing" EntityType="Self.Listing" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Listing_County" Association="Self.FK_Listing_County">
+      <End Role="County" EntitySet="County" />
+      <End Role="Listing" EntitySet="Listing" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

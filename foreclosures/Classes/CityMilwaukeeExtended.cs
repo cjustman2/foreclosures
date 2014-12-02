@@ -8,15 +8,15 @@ namespace foreclosures.Classes
 {
     public class CityMilwaukeeExtended : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public  string PageUrl { get { return "http://city.milwaukee.gov/ExtendedListing"; } }
         public List<Listing> addresses { get; set; }
      
         public County county { get; set; }
         private HttpContext context { get; set; }
 
-        public CityMilwaukeeExtended(string url, HttpContext context)
+        public CityMilwaukeeExtended( HttpContext context)
         {
-            this.PageUrl = url;
+         
             this.addresses = new List<Listing>();
             this.context = context;
         }
@@ -26,16 +26,16 @@ namespace foreclosures.Classes
 
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
             List<Listing> addresses = new List<Listing>();
 
             try
             {
 
-                string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
+              //  string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
 
-                string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] tables = pageData.Split(new string[] { "<table border=\"0\" cellpadding=\"1\" cellspacing=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
 
 
 
@@ -53,7 +53,7 @@ namespace foreclosures.Classes
                     try
                     {
 
-                        SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                        TaskLogger.Instance.AddTaskProgress(ID, percent);
                         if (i > 0)
                         {
 
@@ -84,7 +84,7 @@ namespace foreclosures.Classes
                     }
                     catch (Exception ex)
                     {
-                        SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                        ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
                     }
 
                     i++;

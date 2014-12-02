@@ -29,6 +29,10 @@ namespace foreclosures
     
         public virtual DbSet<County> Counties { get; set; }
         public virtual DbSet<Listing> Listings { get; set; }
+        public virtual DbSet<zipcodes_> zipcodes_ { get; set; }
+        public virtual DbSet<Attribute> Attributes { get; set; }
+        public virtual DbSet<Polygon> Polygons { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
     
         public virtual int Batch_Listing_Delete(Nullable<int> countyID)
         {

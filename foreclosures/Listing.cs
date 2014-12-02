@@ -26,7 +26,16 @@ namespace foreclosures
         public Nullable<bool> IsNew { get; set; }
         public string ScopeOfWork { get; set; }
         public string PDFLink { get; set; }
+        public Nullable<double> zipcode { get; set; }
+        public string additionalInfo { get; set; }
+        public string type { get; set; }
+        public string bedrooms { get; set; }
+        public string baths { get; set; }
+        public Nullable<int> cityId { get; set; }
+        public Nullable<int> attributeId { get; set; }
+        public string saleDate { get; set; }
     
         public virtual County County { get; set; }
+        public virtual Attribute Attribute { get; set; }
     }
 }

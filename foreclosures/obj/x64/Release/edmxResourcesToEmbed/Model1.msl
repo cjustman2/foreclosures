@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ForeclosuresModelStoreContainer" CdmEntityContainer="ForeclosuresEntities">
+    <EntitySetMapping Name="Counties">
+      <EntityTypeMapping TypeName="ForeclosuresModel.County">
+        <MappingFragment StoreEntitySet="County">
+          <ScalarProperty Name="CityCenter" ColumnName="CityCenter" />
+          <ScalarProperty Name="SiteAddress" ColumnName="SiteAddress" />
+          <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+          <ScalarProperty Name="CountyName" ColumnName="CountyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Listings">
+      <EntityTypeMapping TypeName="ForeclosuresModel.Listing">
+        <MappingFragment StoreEntitySet="Listing">
+          <ScalarProperty Name="PDFLink" ColumnName="PDFLink" />
+          <ScalarProperty Name="ScopeOfWork" ColumnName="ScopeOfWork" />
+          <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+          <ScalarProperty Name="BeenRemoved" ColumnName="BeenRemoved" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+          <ScalarProperty Name="ListingID" ColumnName="ListingID" />
+          <ScalarProperty Name="ListingAddress" ColumnName="ListingAddress" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Mark_All_As_Removed" FunctionName="ForeclosuresModel.Store.Mark_All_As_Removed" />
+  </EntityContainerMapping>
+</Mapping>

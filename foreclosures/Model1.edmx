@@ -30,7 +30,89 @@
           <Property Name="IsNew" Type="bit" />
           <Property Name="ScopeOfWork" Type="nvarchar(max)" />
           <Property Name="PDFLink" Type="nvarchar(max)" />
+          <Property Name="zipcode" Type="float" />
+          <Property Name="cityId" Type="int" />
+          <Property Name="additionalInfo" Type="nvarchar(max)" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" />
+          <Property Name="bedrooms" Type="nvarchar" MaxLength="50" />
+          <Property Name="baths" Type="nvarchar" MaxLength="50" />
+          <Property Name="attributeId" Type="int" />
+          <Property Name="saleDate" Type="nvarchar" MaxLength="255" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'foreclosures.dbo.zipcodes$' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="zipcodes$">
+          <Key>
+            <PropertyRef Name="Zipcode" />
+            <PropertyRef Name="Decommisioned" />
+          </Key>
+          <Property Name="RecordNumber" Type="float" />
+          <Property Name="Zipcode" Type="float" Nullable="false" />
+          <Property Name="ZipCodeType" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="LocationType" Type="nvarchar" MaxLength="255" />
+          <Property Name="Lat" Type="float" />
+          <Property Name="Long" Type="float" />
+          <Property Name="Xaxis" Type="float" />
+          <Property Name="Yaxis" Type="float" />
+          <Property Name="Zaxis" Type="float" />
+          <Property Name="WorldRegion" Type="nvarchar" MaxLength="255" />
+          <Property Name="Country" Type="nvarchar" MaxLength="255" />
+          <Property Name="LocationText" Type="nvarchar" MaxLength="255" />
+          <Property Name="Location" Type="nvarchar" MaxLength="255" />
+          <Property Name="Decommisioned" Type="bit" Nullable="false" />
+          <Property Name="TaxReturnsFiled" Type="nvarchar" MaxLength="255" />
+          <Property Name="EstimatedPopulation" Type="nvarchar" MaxLength="255" />
+          <Property Name="TotalWages" Type="nvarchar" MaxLength="255" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Attributes">
+          <Key>
+            <PropertyRef Name="attributeId" />
+          </Key>
+          <Property Name="attributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="attributeName" Type="nvarchar" MaxLength="255" />
+          <Property Name="typeId" Type="int" />
+          <Property Name="displayOrder" Type="int" />
+        </EntityType>
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="cityId" />
+          </Key>
+          <Property Name="cityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cityName" Type="nvarchar" MaxLength="255" />
+          <Property Name="countyId" Type="int" />
+        </EntityType>
+        <EntityType Name="Polygons">
+          <Key>
+            <PropertyRef Name="polygonId" />
+          </Key>
+          <Property Name="polygonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="polygonName" Type="nvarchar" MaxLength="255" />
+          <Property Name="northwestAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="northeastAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="southeastAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="southwestAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="northwestCoord" Type="nvarchar" MaxLength="50" />
+          <Property Name="northeastCoord" Type="nvarchar" MaxLength="50" />
+          <Property Name="southeastCoord" Type="nvarchar" MaxLength="50" />
+          <Property Name="southwestCoord" Type="nvarchar" MaxLength="50" />
+          <Property Name="countyId" Type="int" />
+          <Property Name="cityId" Type="int" />
+        </EntityType>
+        <Association Name="FK_Listing_Attributes">
+          <End Role="Attributes" Type="Self.Attributes" Multiplicity="0..1" />
+          <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attributes">
+              <PropertyRef Name="attributeId" />
+            </Principal>
+            <Dependent Role="Listing">
+              <PropertyRef Name="attributeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Listing_County">
           <End Role="County" Type="Self.County" Multiplicity="0..1" />
           <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
@@ -49,6 +131,37 @@
         <EntityContainer Name="ForeclosuresModelStoreContainer">
           <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Listing" EntityType="Self.Listing" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="foreclosure" store:Type="Tables" />
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="foreclosure" store:Type="Tables" />
+          <EntitySet Name="Polygons" EntityType="Self.Polygons" Schema="foreclosure" store:Type="Tables" />
+          <EntitySet Name="zipcodes$" EntityType="Self.zipcodes$" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [zipcodes$].[RecordNumber] AS [RecordNumber], 
+    [zipcodes$].[Zipcode] AS [Zipcode], 
+    [zipcodes$].[ZipCodeType] AS [ZipCodeType], 
+    [zipcodes$].[City] AS [City], 
+    [zipcodes$].[State] AS [State], 
+    [zipcodes$].[LocationType] AS [LocationType], 
+    [zipcodes$].[Lat] AS [Lat], 
+    [zipcodes$].[Long] AS [Long], 
+    [zipcodes$].[Xaxis] AS [Xaxis], 
+    [zipcodes$].[Yaxis] AS [Yaxis], 
+    [zipcodes$].[Zaxis] AS [Zaxis], 
+    [zipcodes$].[WorldRegion] AS [WorldRegion], 
+    [zipcodes$].[Country] AS [Country], 
+    [zipcodes$].[LocationText] AS [LocationText], 
+    [zipcodes$].[Location] AS [Location], 
+    [zipcodes$].[Decommisioned] AS [Decommisioned], 
+    [zipcodes$].[TaxReturnsFiled] AS [TaxReturnsFiled], 
+    [zipcodes$].[EstimatedPopulation] AS [EstimatedPopulation], 
+    [zipcodes$].[TotalWages] AS [TotalWages], 
+    [zipcodes$].[Notes] AS [Notes]
+    FROM [dbo].[zipcodes$] AS [zipcodes$]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Listing_Attributes" Association="Self.FK_Listing_Attributes">
+            <End Role="Attributes" EntitySet="Attributes" />
+            <End Role="Listing" EntitySet="Listing" />
+          </AssociationSet>
           <AssociationSet Name="FK_Listing_County" Association="Self.FK_Listing_County">
             <End Role="County" EntitySet="County" />
             <End Role="Listing" EntitySet="Listing" />
@@ -85,6 +198,15 @@
           <Property Name="IsNew" Type="Boolean" />
           <Property Name="ScopeOfWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PDFLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="zipcode" Type="Double" />
+          <Property Name="additionalInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="bedrooms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="baths" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cityId" Type="Int32" />
+          <Property Name="attributeId" Type="Int32" />
+          <NavigationProperty Name="Attribute" Relationship="ForeclosuresModel.FK_Listing_Attributes" FromRole="Listing" ToRole="Attribute" />
+          <Property Name="saleDate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="ForeclosuresEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Counties" EntityType="Self.County" />
@@ -99,6 +221,14 @@
           <FunctionImport Name="Mark_All_As_Removed">
           <Parameter Name="CountyID" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="zipcodes_" EntityType="ForeclosuresModel.zipcodes_" />
+          <EntitySet Name="Attributes" EntityType="ForeclosuresModel.Attribute" />
+          <EntitySet Name="Polygons" EntityType="ForeclosuresModel.Polygon" />
+          <EntitySet Name="Cities" EntityType="ForeclosuresModel.City" />
+          <AssociationSet Name="FK_Listing_Attributes" Association="ForeclosuresModel.FK_Listing_Attributes">
+            <End Role="Attribute" EntitySet="Attributes" />
+            <End Role="Listing" EntitySet="Listings" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Listing_County">
           <End Type="ForeclosuresModel.County" Role="County" Multiplicity="0..1" />
@@ -109,6 +239,79 @@
             </Principal>
             <Dependent Role="Listing">
               <PropertyRef Name="CountyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="zipcodes_">
+          <Key>
+            <PropertyRef Name="Zipcode" />
+            <PropertyRef Name="Decommisioned" />
+          </Key>
+          <Property Name="RecordNumber" Type="Double" />
+          <Property Name="Zipcode" Type="Double" Nullable="false" />
+          <Property Name="ZipCodeType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocationType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Lat" Type="Double" />
+          <Property Name="Long" Type="Double" />
+          <Property Name="Xaxis" Type="Double" />
+          <Property Name="Yaxis" Type="Double" />
+          <Property Name="Zaxis" Type="Double" />
+          <Property Name="WorldRegion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LocationText" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Decommisioned" Type="Boolean" Nullable="false" />
+          <Property Name="TaxReturnsFiled" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="EstimatedPopulation" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TotalWages" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Attribute">
+          <Key>
+            <PropertyRef Name="attributeId" />
+          </Key>
+          <Property Name="attributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="attributeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_Attributes" FromRole="Attribute" ToRole="Listing" />
+          <Property Name="typeId" Type="Int32" />
+          <Property Name="displayOrder" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Polygon">
+          <Key>
+            <PropertyRef Name="polygonId" />
+          </Key>
+          <Property Name="polygonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="polygonName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="northwestAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="northeastAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="southeastAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="southwestAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="northwestCoord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="northeastCoord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="southeastCoord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="southwestCoord" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="countyId" Type="Int32" />
+          <Property Name="cityId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="cityId" />
+          </Key>
+          <Property Name="cityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="countyId" Type="Int32" />
+        </EntityType>
+        <Association Name="FK_Listing_Attributes">
+          <End Type="ForeclosuresModel.Attribute" Role="Attribute" Multiplicity="0..1" />
+          <End Type="ForeclosuresModel.Listing" Role="Listing" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Attribute">
+              <PropertyRef Name="attributeId" />
+            </Principal>
+            <Dependent Role="Listing">
+              <PropertyRef Name="attributeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -131,6 +334,14 @@
           <EntitySetMapping Name="Listings">
             <EntityTypeMapping TypeName="ForeclosuresModel.Listing">
               <MappingFragment StoreEntitySet="Listing">
+                <ScalarProperty Name="saleDate" ColumnName="saleDate" />
+                <ScalarProperty Name="attributeId" ColumnName="attributeId" />
+                <ScalarProperty Name="cityId" ColumnName="cityId" />
+                <ScalarProperty Name="baths" ColumnName="baths" />
+                <ScalarProperty Name="bedrooms" ColumnName="bedrooms" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="additionalInfo" ColumnName="additionalInfo" />
+                <ScalarProperty Name="zipcode" ColumnName="zipcode" />
                 <ScalarProperty Name="PDFLink" ColumnName="PDFLink" />
                 <ScalarProperty Name="ScopeOfWork" ColumnName="ScopeOfWork" />
                 <ScalarProperty Name="IsNew" ColumnName="IsNew" />
@@ -147,6 +358,69 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="Mark_All_As_Removed" FunctionName="ForeclosuresModel.Store.Mark_All_As_Removed" />
+          <EntitySetMapping Name="zipcodes_">
+            <EntityTypeMapping TypeName="ForeclosuresModel.zipcodes_">
+              <MappingFragment StoreEntitySet="zipcodes$">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="TotalWages" ColumnName="TotalWages" />
+                <ScalarProperty Name="EstimatedPopulation" ColumnName="EstimatedPopulation" />
+                <ScalarProperty Name="TaxReturnsFiled" ColumnName="TaxReturnsFiled" />
+                <ScalarProperty Name="Decommisioned" ColumnName="Decommisioned" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="LocationText" ColumnName="LocationText" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="WorldRegion" ColumnName="WorldRegion" />
+                <ScalarProperty Name="Zaxis" ColumnName="Zaxis" />
+                <ScalarProperty Name="Yaxis" ColumnName="Yaxis" />
+                <ScalarProperty Name="Xaxis" ColumnName="Xaxis" />
+                <ScalarProperty Name="Long" ColumnName="Long" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="LocationType" ColumnName="LocationType" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ZipCodeType" ColumnName="ZipCodeType" />
+                <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+                <ScalarProperty Name="RecordNumber" ColumnName="RecordNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attributes">
+            <EntityTypeMapping TypeName="ForeclosuresModel.Attribute">
+              <MappingFragment StoreEntitySet="Attributes">
+                <ScalarProperty Name="displayOrder" ColumnName="displayOrder" />
+                <ScalarProperty Name="typeId" ColumnName="typeId" />
+                <ScalarProperty Name="attributeName" ColumnName="attributeName" />
+                <ScalarProperty Name="attributeId" ColumnName="attributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Polygons">
+            <EntityTypeMapping TypeName="ForeclosuresModel.Polygon">
+              <MappingFragment StoreEntitySet="Polygons">
+                <ScalarProperty Name="cityId" ColumnName="cityId" />
+                <ScalarProperty Name="countyId" ColumnName="countyId" />
+                <ScalarProperty Name="southwestCoord" ColumnName="southwestCoord" />
+                <ScalarProperty Name="southeastCoord" ColumnName="southeastCoord" />
+                <ScalarProperty Name="northeastCoord" ColumnName="northeastCoord" />
+                <ScalarProperty Name="northwestCoord" ColumnName="northwestCoord" />
+                <ScalarProperty Name="southwestAddress" ColumnName="southwestAddress" />
+                <ScalarProperty Name="southeastAddress" ColumnName="southeastAddress" />
+                <ScalarProperty Name="northeastAddress" ColumnName="northeastAddress" />
+                <ScalarProperty Name="northwestAddress" ColumnName="northwestAddress" />
+                <ScalarProperty Name="polygonName" ColumnName="polygonName" />
+                <ScalarProperty Name="polygonId" ColumnName="polygonId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="ForeclosuresModel.City">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="countyId" ColumnName="countyId" />
+                <ScalarProperty Name="cityName" ColumnName="cityName" />
+                <ScalarProperty Name="cityId" ColumnName="cityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

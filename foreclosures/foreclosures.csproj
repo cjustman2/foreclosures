@@ -251,10 +251,24 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Attribute.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="City.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Classes\CityMilwaukeeClient.cs" />
     <Compile Include="Classes\CityMilwaukeeExtended.cs" />
     <Compile Include="Classes\DodgeCounty.cs" />
-    <Compile Include="Utilities\Loggers.cs" />
+    <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Exceptions\RedirectedException.cs" />
+    <Compile Include="Polygon.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AddressService.cs" />
+    <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Classes\WebPageStrategy.cs" />
     <Compile Include="Classes\SawyerCounty.cs" />
     <Compile Include="Classes\WashingtonCounty.cs" />
@@ -289,20 +303,40 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\UrlService.cs" />
+    <Compile Include="Services\WebService.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utilities\Google.cs" />
-    <Compile Include="Utilities\PageParser.cs" />
-    <Compile Include="Utilities\SingletonSafeThrottleAPIHits.cs" />
-    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Services\GoogleService.cs" />
+    <Compile Include="Services\RobotDotTxtService.cs" />
+    <Compile Include="Services\ThrottleRequestService.cs" />
+    <Compile Include="Services\PdfServices.cs" />
+    <Compile Include="zipcodes_.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\ajax-loader%282%29.gif" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Pages\admin.html" />
+    <Content Include="Pages\GoogleMap.html" />
+    <Content Include="Pages\login.html" />
+    <Content Include="Pages\register.html" />
+    <Content Include="Scripts\Angular\AccountController.js" />
+    <Content Include="Scripts\Angular\AdminController.js" />
+    <Content Include="Scripts\Angular\GoogleMapsController.js" />
+    <Content Include="Scripts\Angular\NavigationController.js" />
+    <Content Include="Scripts\Angular\Services.js" />
+    <Content Include="Templates\Dashboard.html" />
+    <Content Include="Scripts\admin.js" />
+    <Content Include="Scripts\Angular\1AngularModule.js" />
+    <Content Include="Scripts\Angular\DashboardController.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\googlemaps.js" />
     <Content Include="x64\liblept168.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -339,6 +373,7 @@
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %286%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %287%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %288%29.pubxml" />
+    <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy %289%29.pubxml" />
     <None Include="Properties\PublishProfiles\wihomeforeclosures.com - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -384,7 +419,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Downloads\" />
+    <Folder Include="obj\Debug\" />
     <Folder Include="PdfToImages\" />
+    <Folder Include="Views\ADmin\" />
+    <Folder Include="Views\Dashboard\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

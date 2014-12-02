@@ -7,15 +7,14 @@ namespace foreclosures.Classes
 {
     public class WashingtonCounty : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public string PageUrl { get { return "http://www.washingtoncountysheriffwi.org/sheriff_sales.php"; } }
         public List<Listing> addresses { get; set; }
 
         public County county { get; set; }
         private HttpContext context { get; set; }
 
-        public WashingtonCounty(string url,HttpContext context)
+        public WashingtonCounty(HttpContext context)
         {
-            this.PageUrl = url;
             this.addresses = new List<Listing>();
             this.context = context;
         }
@@ -26,7 +25,7 @@ namespace foreclosures.Classes
 
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
             List<Listing> addresses = new List<Listing>();
        
@@ -48,7 +47,7 @@ namespace foreclosures.Classes
                 double percent = (100.0 / l.Count()) / 2.0;
                 foreach (XElement element in doc.Descendants("p"))
                 {
-                    SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                    TaskLogger.Instance.AddTaskProgress(ID, percent);
 
                     try
                     {
@@ -67,7 +66,7 @@ namespace foreclosures.Classes
                     }
                     catch (Exception ex)
                     {
-                        SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                        ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
                     }
 
                 }

@@ -8,13 +8,13 @@ namespace foreclosures.Classes
 {
     public class DodgeCounty : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public  string PageUrl { get { return "http://www.co.dodge.wi.us/index.aspx?page=110"; } }
        public List<Listing> addresses { get; set; }
        private HttpContext context { get; set; }
        public County county { get; set; }
-       public DodgeCounty(string url, HttpContext context)
+       public DodgeCounty(HttpContext context)
         {
-            this.PageUrl = url;
+          
             this.addresses = new List<Listing>();
             this.context = context;
         }
@@ -25,7 +25,7 @@ namespace foreclosures.Classes
 
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
 
             try
@@ -65,7 +65,7 @@ namespace foreclosures.Classes
                             if (hrefs.Count > 0)
                             {
 
-                                SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                                TaskLogger.Instance.AddTaskProgress(ID, percent);
 
                                 string file = "http://www.co.dodge.wi.us/";
                                 int end = lis[i].Value.ToString().IndexOf(')') + 1;
@@ -92,7 +92,7 @@ namespace foreclosures.Classes
                         }
                         catch (Exception ex)
                         {
-                            SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                            ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
                         }
 
                     }

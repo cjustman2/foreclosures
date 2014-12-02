@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ForeclosuresModelStoreContainer" CdmEntityContainer="ForeclosuresEntities">
+    <EntitySetMapping Name="Counties">
+      <EntityTypeMapping TypeName="ForeclosuresModel.County">
+        <MappingFragment StoreEntitySet="County">
+          <ScalarProperty Name="CityCenter" ColumnName="CityCenter" />
+          <ScalarProperty Name="SiteAddress" ColumnName="SiteAddress" />
+          <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+          <ScalarProperty Name="CountyName" ColumnName="CountyName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Listings">
+      <EntityTypeMapping TypeName="ForeclosuresModel.Listing">
+        <MappingFragment StoreEntitySet="Listing">
+          <ScalarProperty Name="saleDate" ColumnName="saleDate" />
+          <ScalarProperty Name="attributeId" ColumnName="attributeId" />
+          <ScalarProperty Name="cityId" ColumnName="cityId" />
+          <ScalarProperty Name="baths" ColumnName="baths" />
+          <ScalarProperty Name="bedrooms" ColumnName="bedrooms" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="additionalInfo" ColumnName="additionalInfo" />
+          <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+          <ScalarProperty Name="PDFLink" ColumnName="PDFLink" />
+          <ScalarProperty Name="ScopeOfWork" ColumnName="ScopeOfWork" />
+          <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+          <ScalarProperty Name="BeenRemoved" ColumnName="BeenRemoved" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="CountyID" ColumnName="CountyID" />
+          <ScalarProperty Name="ListingID" ColumnName="ListingID" />
+          <ScalarProperty Name="ListingAddress" ColumnName="ListingAddress" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Mark_All_As_Removed" FunctionName="ForeclosuresModel.Store.Mark_All_As_Removed" />
+    <EntitySetMapping Name="zipcodes_">
+      <EntityTypeMapping TypeName="ForeclosuresModel.zipcodes_">
+        <MappingFragment StoreEntitySet="zipcodes$">
+          <ScalarProperty Name="Notes" ColumnName="Notes" />
+          <ScalarProperty Name="TotalWages" ColumnName="TotalWages" />
+          <ScalarProperty Name="EstimatedPopulation" ColumnName="EstimatedPopulation" />
+          <ScalarProperty Name="TaxReturnsFiled" ColumnName="TaxReturnsFiled" />
+          <ScalarProperty Name="Decommisioned" ColumnName="Decommisioned" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="LocationText" ColumnName="LocationText" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="WorldRegion" ColumnName="WorldRegion" />
+          <ScalarProperty Name="Zaxis" ColumnName="Zaxis" />
+          <ScalarProperty Name="Yaxis" ColumnName="Yaxis" />
+          <ScalarProperty Name="Xaxis" ColumnName="Xaxis" />
+          <ScalarProperty Name="Long" ColumnName="Long" />
+          <ScalarProperty Name="Lat" ColumnName="Lat" />
+          <ScalarProperty Name="LocationType" ColumnName="LocationType" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="ZipCodeType" ColumnName="ZipCodeType" />
+          <ScalarProperty Name="Zipcode" ColumnName="Zipcode" />
+          <ScalarProperty Name="RecordNumber" ColumnName="RecordNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Attributes">
+      <EntityTypeMapping TypeName="ForeclosuresModel.Attribute">
+        <MappingFragment StoreEntitySet="Attributes">
+          <ScalarProperty Name="displayOrder" ColumnName="displayOrder" />
+          <ScalarProperty Name="typeId" ColumnName="typeId" />
+          <ScalarProperty Name="attributeName" ColumnName="attributeName" />
+          <ScalarProperty Name="attributeId" ColumnName="attributeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Polygons">
+      <EntityTypeMapping TypeName="ForeclosuresModel.Polygon">
+        <MappingFragment StoreEntitySet="Polygons">
+          <ScalarProperty Name="cityId" ColumnName="cityId" />
+          <ScalarProperty Name="countyId" ColumnName="countyId" />
+          <ScalarProperty Name="southwestCoord" ColumnName="southwestCoord" />
+          <ScalarProperty Name="southeastCoord" ColumnName="southeastCoord" />
+          <ScalarProperty Name="northeastCoord" ColumnName="northeastCoord" />
+          <ScalarProperty Name="northwestCoord" ColumnName="northwestCoord" />
+          <ScalarProperty Name="southwestAddress" ColumnName="southwestAddress" />
+          <ScalarProperty Name="southeastAddress" ColumnName="southeastAddress" />
+          <ScalarProperty Name="northeastAddress" ColumnName="northeastAddress" />
+          <ScalarProperty Name="northwestAddress" ColumnName="northwestAddress" />
+          <ScalarProperty Name="polygonName" ColumnName="polygonName" />
+          <ScalarProperty Name="polygonId" ColumnName="polygonId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cities">
+      <EntityTypeMapping TypeName="ForeclosuresModel.City">
+        <MappingFragment StoreEntitySet="Cities">
+          <ScalarProperty Name="countyId" ColumnName="countyId" />
+          <ScalarProperty Name="cityName" ColumnName="cityName" />
+          <ScalarProperty Name="cityId" ColumnName="cityId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

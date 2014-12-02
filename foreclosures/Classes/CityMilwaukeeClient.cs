@@ -8,7 +8,7 @@ namespace foreclosures.Classes
 {
     public class CityMilwaukeeClient : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public  string PageUrl { get { return "http://city.milwaukee.gov/Current-Listing-12-18-14"; } }
        public List<Listing> addresses { get; set; }
 
        public County county { get; set; }
@@ -16,33 +16,33 @@ namespace foreclosures.Classes
        private HttpContext context { get; set; }
 
 
-        public CityMilwaukeeClient(string url, HttpContext context)
+        public CityMilwaukeeClient(HttpContext context)
         {
 
             string month = DateTime.Now.AddMonths(1).Month.ToString();
             this.addresses = new List<Listing>();
             this.context = context;
-
-            this.PageUrl = url += "12-18-14";
         }
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
 
             List<Listing> addresses = new List<Listing>();
             try
             {
 
-                string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
+               // string[] text = pageData.Split(new string[] { "<div class=\"Freeform CenterZone\">" }, StringSplitOptions.RemoveEmptyEntries);
 
-                string[] tables = text[4].Split(new string[] { "<table border=\"0\" cellspacing=\"1\" cellpadding=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
-
-
+                string[] tables = pageData.Split(new string[] { "<table border=\"0\" cellpadding=\"1\" cellspacing=\"1\" width=\"100%\">" }, StringSplitOptions.RemoveEmptyEntries);
 
 
 
-                string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1).Replace("&nbsp;", "").Replace("<hr />", "").Replace("diams", "").Replace("<br />", "");
+
+
+                string table = tables[2].Trim().Substring(0, tables[2].IndexOf("</tbody>") + 1)
+                                                                        .Replace("&nbsp;", "").Replace("<hr />", "").Replace("\t","").Replace("\n","").Replace("\r","")
+                                                                        .Replace("diams", "").Replace("<br />", "").Replace("</tbody", "</tbody>");
 
                 XDocument doc = XDocument.Parse(table.Replace("&", "&amp;"));
 
@@ -52,7 +52,7 @@ namespace foreclosures.Classes
                 double percent = (100.0 / l.Count()) / 2.0;
                 foreach (XElement element in doc.Descendants("tr"))
                 {
-                    SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                    TaskLogger.Instance.AddTaskProgress(ID, percent);
 
                     try
                     {
@@ -88,7 +88,7 @@ namespace foreclosures.Classes
                     }
                     catch (Exception ex)
                     {
-                        SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                        ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
 
                     }
 

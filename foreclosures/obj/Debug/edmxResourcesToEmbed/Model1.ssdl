@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ForeclosuresModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="County">
+    <Key>
+      <PropertyRef Name="CountyID" />
+    </Key>
+    <Property Name="CountyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CountyName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SiteAddress" Type="nvarchar(max)" />
+    <Property Name="CityCenter" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Listing">
+    <Key>
+      <PropertyRef Name="ListingID" />
+    </Key>
+    <Property Name="ListingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ListingAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="Latitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="Longitude" Type="nvarchar" MaxLength="50" />
+    <Property Name="ModifiedDate" Type="datetime" />
+    <Property Name="CountyID" Type="int" />
+    <Property Name="Image" Type="nvarchar(max)" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+    <Property Name="BeenRemoved" Type="bit" />
+    <Property Name="IsNew" Type="bit" />
+    <Property Name="ScopeOfWork" Type="nvarchar(max)" />
+    <Property Name="PDFLink" Type="nvarchar(max)" />
+    <Property Name="zipcode" Type="float" />
+    <Property Name="cityId" Type="int" />
+    <Property Name="additionalInfo" Type="nvarchar(max)" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="bedrooms" Type="nvarchar" MaxLength="50" />
+    <Property Name="baths" Type="nvarchar" MaxLength="50" />
+    <Property Name="attributeId" Type="int" />
+    <Property Name="saleDate" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'foreclosures.dbo.zipcodes$' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="zipcodes$">
+    <Key>
+      <PropertyRef Name="Zipcode" />
+      <PropertyRef Name="Decommisioned" />
+    </Key>
+    <Property Name="RecordNumber" Type="float" />
+    <Property Name="Zipcode" Type="float" Nullable="false" />
+    <Property Name="ZipCodeType" Type="nvarchar" MaxLength="255" />
+    <Property Name="City" Type="nvarchar" MaxLength="255" />
+    <Property Name="State" Type="nvarchar" MaxLength="255" />
+    <Property Name="LocationType" Type="nvarchar" MaxLength="255" />
+    <Property Name="Lat" Type="float" />
+    <Property Name="Long" Type="float" />
+    <Property Name="Xaxis" Type="float" />
+    <Property Name="Yaxis" Type="float" />
+    <Property Name="Zaxis" Type="float" />
+    <Property Name="WorldRegion" Type="nvarchar" MaxLength="255" />
+    <Property Name="Country" Type="nvarchar" MaxLength="255" />
+    <Property Name="LocationText" Type="nvarchar" MaxLength="255" />
+    <Property Name="Location" Type="nvarchar" MaxLength="255" />
+    <Property Name="Decommisioned" Type="bit" Nullable="false" />
+    <Property Name="TaxReturnsFiled" Type="nvarchar" MaxLength="255" />
+    <Property Name="EstimatedPopulation" Type="nvarchar" MaxLength="255" />
+    <Property Name="TotalWages" Type="nvarchar" MaxLength="255" />
+    <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Attributes">
+    <Key>
+      <PropertyRef Name="attributeId" />
+    </Key>
+    <Property Name="attributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="attributeName" Type="nvarchar" MaxLength="255" />
+    <Property Name="typeId" Type="int" />
+    <Property Name="displayOrder" Type="int" />
+  </EntityType>
+  <EntityType Name="Cities">
+    <Key>
+      <PropertyRef Name="cityId" />
+    </Key>
+    <Property Name="cityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cityName" Type="nvarchar" MaxLength="255" />
+    <Property Name="countyId" Type="int" />
+  </EntityType>
+  <EntityType Name="Polygons">
+    <Key>
+      <PropertyRef Name="polygonId" />
+    </Key>
+    <Property Name="polygonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="polygonName" Type="nvarchar" MaxLength="255" />
+    <Property Name="northwestAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="northeastAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="southeastAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="southwestAddress" Type="nvarchar" MaxLength="255" />
+    <Property Name="northwestCoord" Type="nvarchar" MaxLength="50" />
+    <Property Name="northeastCoord" Type="nvarchar" MaxLength="50" />
+    <Property Name="southeastCoord" Type="nvarchar" MaxLength="50" />
+    <Property Name="southwestCoord" Type="nvarchar" MaxLength="50" />
+    <Property Name="countyId" Type="int" />
+    <Property Name="cityId" Type="int" />
+  </EntityType>
+  <Association Name="FK_Listing_Attributes">
+    <End Role="Attributes" Type="Self.Attributes" Multiplicity="0..1" />
+    <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Attributes">
+        <PropertyRef Name="attributeId" />
+      </Principal>
+      <Dependent Role="Listing">
+        <PropertyRef Name="attributeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Listing_County">
+    <End Role="County" Type="Self.County" Multiplicity="0..1" />
+    <End Role="Listing" Type="Self.Listing" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="County">
+        <PropertyRef Name="CountyID" />
+      </Principal>
+      <Dependent Role="Listing">
+        <PropertyRef Name="CountyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Mark_All_As_Removed" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="CountyID" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="ForeclosuresModelStoreContainer">
+    <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Listing" EntityType="Self.Listing" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Attributes" EntityType="Self.Attributes" Schema="foreclosure" store:Type="Tables" />
+    <EntitySet Name="Cities" EntityType="Self.Cities" Schema="foreclosure" store:Type="Tables" />
+    <EntitySet Name="Polygons" EntityType="Self.Polygons" Schema="foreclosure" store:Type="Tables" />
+    <EntitySet Name="zipcodes$" EntityType="Self.zipcodes$" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [zipcodes$].[RecordNumber] AS [RecordNumber], 
+    [zipcodes$].[Zipcode] AS [Zipcode], 
+    [zipcodes$].[ZipCodeType] AS [ZipCodeType], 
+    [zipcodes$].[City] AS [City], 
+    [zipcodes$].[State] AS [State], 
+    [zipcodes$].[LocationType] AS [LocationType], 
+    [zipcodes$].[Lat] AS [Lat], 
+    [zipcodes$].[Long] AS [Long], 
+    [zipcodes$].[Xaxis] AS [Xaxis], 
+    [zipcodes$].[Yaxis] AS [Yaxis], 
+    [zipcodes$].[Zaxis] AS [Zaxis], 
+    [zipcodes$].[WorldRegion] AS [WorldRegion], 
+    [zipcodes$].[Country] AS [Country], 
+    [zipcodes$].[LocationText] AS [LocationText], 
+    [zipcodes$].[Location] AS [Location], 
+    [zipcodes$].[Decommisioned] AS [Decommisioned], 
+    [zipcodes$].[TaxReturnsFiled] AS [TaxReturnsFiled], 
+    [zipcodes$].[EstimatedPopulation] AS [EstimatedPopulation], 
+    [zipcodes$].[TotalWages] AS [TotalWages], 
+    [zipcodes$].[Notes] AS [Notes]
+    FROM [dbo].[zipcodes$] AS [zipcodes$]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Listing_Attributes" Association="Self.FK_Listing_Attributes">
+      <End Role="Attributes" EntitySet="Attributes" />
+      <End Role="Listing" EntitySet="Listing" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Listing_County" Association="Self.FK_Listing_County">
+      <End Role="County" EntitySet="County" />
+      <End Role="Listing" EntitySet="Listing" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

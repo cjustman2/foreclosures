@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body style="height: 100%; margin: 0px; padding: 0px">
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.DropDownList("Counties")</li>
+                    <li></li>
+                    <li><input type="button" value="Update Addresses" onclick="PageScrape()"/></li>
+               
+                </ul>
+                
+                <ul style="display:inline;list-style-type:none"><li id="numberOfListings" style="color:#fff"></li></ul>
+            </div>
+        </div>
+    </div>*@
+    <div class="container" style="max-width:100%;height:800px;">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - wihomeforeclosures.com</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

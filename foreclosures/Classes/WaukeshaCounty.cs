@@ -17,13 +17,14 @@ using GhostscriptSharp.Settings;
 using System.Text.RegularExpressions;
 using System.IO;
 using foreclosures.Controllers;
+using foreclosures.Services;
 
 namespace foreclosures.Classes
 {
 
     public class WaukeshaCounty : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public string PageUrl { get { return "http://www.waukeshacounty.gov/defaultwc.aspx?id=38229"; } }
    
         public Listing listing = null;
         public  List<Listing> addresses { get; set; }
@@ -33,9 +34,8 @@ namespace foreclosures.Classes
         public System.Web.HttpContext currentContext { get; set; }
       
 
-        public WaukeshaCounty(string url, System.Web.HttpContext context)
+        public WaukeshaCounty(System.Web.HttpContext context)
         {
-            this.PageUrl = url;
             this.addresses = new List<Listing>();
             this.currentContext = context;
         }
@@ -45,7 +45,7 @@ namespace foreclosures.Classes
 
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
 
             try
@@ -66,7 +66,7 @@ namespace foreclosures.Classes
                 int i = 0;
                 foreach (HtmlNode link in htmlDoc.DocumentNode.SelectNodes("//div[@id='ctl00_MainContent_ContentBlock1']/p/a"))
                 {
-                    SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                    TaskLogger.Instance.AddTaskProgress(ID, percent);
 
                     if (i > 25)
                     {
@@ -82,19 +82,20 @@ namespace foreclosures.Classes
                         string filePath = currentContext.Server.MapPath("/Downloads" + fileName);
 
 
-
+                     
                        
                         using (WebClient client = new WebClient())
                         {
 
                             try
                             {
+                            
                                 client.DownloadFile(file, filePath);
                             
                             }
                             catch (WebException we)
                             {
-                                SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + we.Message, county.CountyName));
+                                ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + we.Message, county.CountyName));
                             }
 
 
@@ -103,8 +104,8 @@ namespace foreclosures.Classes
                         try
                         {
                             string address = null;
-                            Utilities.Utilities util = new Utilities.Utilities();
-                            address = util.ReadPdfFile(filePath);
+                            PdfServices service = new PdfServices();
+                            address = service.ReadPdfFile(filePath);
 
 
 
@@ -113,7 +114,7 @@ namespace foreclosures.Classes
 
                                 string imagePath = currentContext.Server.MapPath("/PdfToImages" + name + ".png");
 
-                                util.PdfToImage(filePath, imagePath);
+                                service.PdfToImage(filePath, imagePath);
 
                                 address = ReadImage(imagePath);
                             }
@@ -140,7 +141,7 @@ namespace foreclosures.Classes
                         }
                         catch(Exception ex)
                         {
-                            SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                            ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
                         }
                         
 
@@ -200,7 +201,7 @@ namespace foreclosures.Classes
                         code += result[j].Text.Replace("of property: ", "");
                         if (string.IsNullOrWhiteSpace(code))
                         {
-                            SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0}) Address not found.", county.CountyName));
+                            ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0}) Address not found.", county.CountyName));
                         }
                         break;
 

@@ -31,8 +31,7 @@ namespace foreclosures.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
+        public string email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

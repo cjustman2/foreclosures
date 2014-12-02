@@ -7,20 +7,20 @@ namespace foreclosures.Classes
 {
     public class SawyerCounty : WebPageStrategy
     {
-        public string PageUrl { get; set; }
+        public string PageUrl { get { return "http://calendar.sawyerwi.org/cgi-bin/cal5/Calcium40.pl?CalendarName=Sheriff_Sales&Op=ShowIt&NavType=Absolute&DayViewHours=10&YearViewColor=Categories&Amount=Year&Type=Condensed"; } }
        public  List<Listing> addresses { get; set; }
        private HttpContext context { get; set; }
        public County county { get; set; }
 
-       public SawyerCounty(string url, HttpContext context)
+       public SawyerCounty(HttpContext context)
         {
-            this.PageUrl = url;
+        
             this.addresses = new List<Listing>();
             this.context = context;
         }
 
 
-        public List<Listing> ParseAddresses(string pageData)
+        public List<Listing> ParseAddresses(string pageData, int ID)
         {
             List<Listing> addresses = new List<Listing>();
 
@@ -42,7 +42,7 @@ namespace foreclosures.Classes
                 double i = 0;
                 foreach (HtmlNode text in htmlDoc.DocumentNode.SelectNodes("//td[@class='DetailsCol c_ForeclosureSale']"))
                 {
-                    SingletonTaskLogger.Instance.AddTaskProgress(county.CountyID, percent);
+                    TaskLogger.Instance.AddTaskProgress(ID, percent);
 
                     try
                     {
@@ -64,7 +64,7 @@ namespace foreclosures.Classes
                     }
                     catch (Exception ex)
                     {
-                        SingletonErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
+                        ErrorLogger.Instance.AddError(county.CountyID, string.Format("({0})" + ex.Message, county.CountyName));
 
                     }
 
