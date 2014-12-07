@@ -28,11 +28,26 @@ namespace foreclosures
         }
     
         public virtual DbSet<County> Counties { get; set; }
-        public virtual DbSet<Listing> Listings { get; set; }
         public virtual DbSet<zipcodes_> zipcodes_ { get; set; }
-        public virtual DbSet<Attribute> Attributes { get; set; }
         public virtual DbSet<Polygon> Polygons { get; set; }
         public virtual DbSet<City> Cities { get; set; }
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
+        public virtual DbSet<aspnet_Applications> aspnet_Applications { get; set; }
+        public virtual DbSet<aspnet_Membership> aspnet_Membership { get; set; }
+        public virtual DbSet<aspnet_Paths> aspnet_Paths { get; set; }
+        public virtual DbSet<aspnet_PersonalizationAllUsers> aspnet_PersonalizationAllUsers { get; set; }
+        public virtual DbSet<aspnet_PersonalizationPerUser> aspnet_PersonalizationPerUser { get; set; }
+        public virtual DbSet<aspnet_Profile> aspnet_Profile { get; set; }
+        public virtual DbSet<aspnet_Roles> aspnet_Roles { get; set; }
+        public virtual DbSet<aspnet_SchemaVersions> aspnet_SchemaVersions { get; set; }
+        public virtual DbSet<aspnet_Users> aspnet_Users { get; set; }
+        public virtual DbSet<aspnet_WebEvent_Events> aspnet_WebEvent_Events { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<CountyListingType> CountyListingTypes { get; set; }
+        public virtual DbSet<Listing> Listings { get; set; }
     
         public virtual int Batch_Listing_Delete(Nullable<int> countyID)
         {

@@ -17,7 +17,7 @@ namespace foreclosures
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-              
+           
         }
     }
 }

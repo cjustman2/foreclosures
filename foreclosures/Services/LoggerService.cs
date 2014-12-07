@@ -5,6 +5,33 @@ using System.Web;
 
 namespace foreclosures.Classes
 {
+    public class Tasks
+    {
+       private List<int> tasks { get; set; }
+       private static Tasks instance;
+        private Tasks()
+        {
+            this.tasks = new List<int>();
+        }
+
+        public static Tasks Instance
+        {
+            get
+            {
+                instance = HttpContext.Current.Session["currentTasks"] as Tasks;
+
+                if (instance == null)
+                {
+                    instance = new Tasks();
+                    HttpContext.Current.Session["currentTasks"] = instance;
+                }
+
+                return instance;
+            }
+
+            
+        }
+    }
     public class TaskLogger
     {
         private Dictionary<int, double> tasks{get;set;}
@@ -21,12 +48,21 @@ namespace foreclosures.Classes
         {
             get
             {
+               // instance = HttpContext.Current.Session["TaskLogger"] as TaskLogger;
                 if (instance == null)
                 {
                     lock (syncRoot)
                     {
+                       // instance = HttpContext.Current.Session["TaskLogger"] as TaskLogger;
+
                         if (instance == null)
+                        {
                             instance = new TaskLogger();
+                          //  HttpContext.Current.Session["TaskLogger"] = instance;
+                        }
+                        
+                         
+                        
                     }
                 }
 

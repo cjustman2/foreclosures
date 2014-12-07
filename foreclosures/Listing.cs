@@ -20,22 +20,22 @@ namespace foreclosures
         public string Longitude { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> CountyID { get; set; }
-        public string Price { get; set; }
         public string Image { get; set; }
+        public string Price { get; set; }
         public Nullable<bool> BeenRemoved { get; set; }
         public Nullable<bool> IsNew { get; set; }
         public string ScopeOfWork { get; set; }
         public string PDFLink { get; set; }
         public Nullable<double> zipcode { get; set; }
+        public Nullable<int> cityId { get; set; }
         public string additionalInfo { get; set; }
-        public string type { get; set; }
+        public string propertyType { get; set; }
         public string bedrooms { get; set; }
         public string baths { get; set; }
-        public Nullable<int> cityId { get; set; }
-        public Nullable<int> attributeId { get; set; }
+        public Nullable<int> typeId { get; set; }
         public string saleDate { get; set; }
     
         public virtual County County { get; set; }
-        public virtual Attribute Attribute { get; set; }
+        public virtual CountyListingType CountyListingType { get; set; }
     }
 }

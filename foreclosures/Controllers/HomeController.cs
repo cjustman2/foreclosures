@@ -36,7 +36,7 @@ namespace foreclosures.Controllers
             var db = new ForeclosuresEntities();
             var county = db.Counties.Find(countyId);
             var removed = db.Listings.Where(x => x.CountyID == countyId && x.BeenRemoved == true).Select(x => new { ListingAddress = x.ListingAddress, isNew = x.IsNew }).ToList();
-            var listings = db.Listings.Where(x => x.CountyID == countyId && x.BeenRemoved == false).Select(x => new { Latitude = x.Latitude, Longitude = x.Longitude, ListingAddress = x.ListingAddress, Image = x.Image, IsNew = x.IsNew, PDFLink = x.PDFLink, ScopeOfWork = x.ScopeOfWork, Price = x.Price, attributeName = x.Attribute.attributeName, attributeId = x.Attribute.attributeId == null ? 0 :x.Attribute.attributeId }).ToList();
+            var listings = db.Listings.Where(x => x.CountyID == countyId && x.BeenRemoved == false).Select(x => new { Latitude = x.Latitude, Longitude = x.Longitude, ListingAddress = x.ListingAddress, Image = x.Image, IsNew = x.IsNew, PDFLink = x.PDFLink, ScopeOfWork = x.ScopeOfWork, Price = x.Price, attributeName = x.CountyListingType.typeName, attributeId = x.CountyListingType.typeId == null ? 0 :x.CountyListingType.parentId }).ToList();
 
             db.Database.Connection.Close();
             db.Dispose();
@@ -68,8 +68,8 @@ namespace foreclosures.Controllers
             var db = new ForeclosuresEntities();
 
           
-                var removed = db.Listings.Where(x => x.attributeId == ID && x.BeenRemoved == true).Select(x => new { ListingAddress = x.ListingAddress, isNew = x.IsNew }).ToList();
-                var listings = db.Listings.Where(x => x.attributeId == ID && x.BeenRemoved == false).Select(x => new { Latitude = x.Latitude, Longitude = x.Longitude, ListingAddress = x.ListingAddress, Image = x.Image, IsNew = x.IsNew, PDFLink = x.PDFLink, ScopeOfWork = x.ScopeOfWork, Price = x.Price, center = x.County.CityCenter }).ToList();
+                var removed = db.Listings.Where(x => x.typeId == ID && x.BeenRemoved == true).Select(x => new { ListingAddress = x.ListingAddress, isNew = x.IsNew }).ToList();
+                var listings = db.Listings.Where(x => x.typeId == ID && x.BeenRemoved == false).Select(x => new { Latitude = x.Latitude, Longitude = x.Longitude, ListingAddress = x.ListingAddress, Image = x.Image, IsNew = x.IsNew, PDFLink = x.PDFLink, ScopeOfWork = x.ScopeOfWork, Price = x.Price, center = x.County.CityCenter }).ToList();
             
             db.Database.Connection.Close();
             db.Dispose();
@@ -116,7 +116,7 @@ namespace foreclosures.Controllers
                         County currentCounty = null;
                         using (var db = new ForeclosuresEntities())
                         {
-                            Attribute a = db.Attributes.Find(ID);
+                            CountyListingType a = db.CountyListingTypes.Find(ID);
                             currentCounty = db.Counties.Find(a.typeId);
                             
                         }
@@ -141,7 +141,8 @@ namespace foreclosures.Controllers
                         }
                         catch (Exception ex)
                         {
-                            string.Format("({0})" + ex.Message, currentCounty.CountyName);
+                            errors.AddError(ID, string.Format("({0})" + ex.Message, currentCounty.CountyName));
+                           
                         }
 
 
@@ -176,7 +177,7 @@ namespace foreclosures.Controllers
 
                                 db.Mark_All_As_Removed(ID);
 
-                                allListings = db.Listings.Where(x => x.attributeId == ID).ToList();
+                                allListings = db.Listings.Where(x => x.typeId == ID).ToList();
 
                                 double percent = (100.0 / listings.Count) / 2.0;
 
@@ -268,7 +269,7 @@ namespace foreclosures.Controllers
                                         {
 
                                             listing.ModifiedDate = DateTime.Now;
-                                            listing.attributeId = ID;
+                                            listing.typeId = ID;
                                             listing.CountyID = currentCounty.CountyID;
 
                                             Listing exists = null;
@@ -276,7 +277,7 @@ namespace foreclosures.Controllers
                                             if (exists != null)
                                             {
 
-
+                                                
 
                                                 exists.zipcode = listing.zipcode;
                                                 exists.cityId = listing.cityId;

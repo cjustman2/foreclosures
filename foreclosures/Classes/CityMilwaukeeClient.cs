@@ -8,7 +8,7 @@ namespace foreclosures.Classes
 {
     public class CityMilwaukeeClient : WebPageStrategy
     {
-        public  string PageUrl { get { return "http://city.milwaukee.gov/Current-Listing-12-18-14"; } }
+        public  string PageUrl { get { return "http://city.milwaukee.gov/Current-Listing-12-18-148"; } }
        public List<Listing> addresses { get; set; }
 
        public County county { get; set; }

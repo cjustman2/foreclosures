@@ -43,16 +43,19 @@ function addMarker(result, pin) {
 
     markers.push(marker);
 
-    if (result.PDFLink != null) {
+    // if (result.PDFLink != null) {
+    var src = result.Image == null ||result.Image == '' ? 'https://maps.googleapis.com/maps/api/streetview?size=150x150&location=' + result.Latitude + ',' + result.Longitude : result.Image;
+    var scope = result.ScopeOfWork == null || result.ScopeOfWork == '' ? '' : '<a href="' + result.ScopeOfWork + '" target="_blank">Scope of Work</a>';
+
         var infowindow = new google.maps.InfoWindow();
         google.maps.event.addListener(marker, 'click', (function (marker) {
             return function () {
-                var content = '<p>' + result.Price + '<div style="background-color: #ffffff;border-color: #3f89d8;border-radius: 3px;border-style: solid;border-width: 1px;clear: both;cursor: default;padding: 10px;position: relative;min-width:300px"></p><a href="' + result.PDFLink + '" target="_blank">' + result.ListingAddress + '</a><br><a href="' + result.ScopeOfWork + '" target="_blank">Scope of Work</a><br><img src="' + result.Image + '"/></div>';
+                var content = '<p>' + result.Price + '<div style="background-color: #ffffff;border-color: #3f89d8;border-radius: 3px;border-style: solid;border-width: 1px;clear: both;cursor: default;padding: 10px;position: relative;min-width:300px"></p><a href="' + result.PDFLink + '" target="_blank">' + result.ListingAddress + '</a><br>'+scope+'<br><img src="' + src + '"/></div>';
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
             }
         })(marker));
-    }
+    //}
 }
 
 

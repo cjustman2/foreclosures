@@ -1,7 +1,8 @@
 ﻿myApp.service('UserService', function () {
     var user = {
         Role: '',
-        LoggedIn: false
+        LoggedIn: false,
+        UserName: ''
     };
 
 
@@ -21,31 +22,39 @@
 });
 
 
-myApp.service('WebService', ['$rootScope',function ($rootScope) {
+myApp.service('PageScrapingService', ['$rootScope',function ($rootScope) {
 
-    var WebServiceObserver = {PagesBeingScraped: []};
+    var PageScraperPages = {PagesBeingScraped: []};
 
+    var PageScraperErrors = {PageErrors:[]};
 
     return {
         
-        AddWebService: function (value) {
-            WebServiceObserver.PagesBeingScraped.push(value);
-            $rootScope.$broadcast("webservice");
+        AddPageScrapingService: function (value) {
+            PageScraperPages.PagesBeingScraped.push(value);
+            $rootScope.$broadcast("PageScrapingPages");
         },
-        RemoveWebService: function (value) {
+        RemovePageScrapingService: function (value) {
 
-            for (var i = 0; i < WebServiceObserver.PagesBeingScraped.length; i++) {
-                if (WebServiceObserver.PagesBeingScraped[i].ID === value) {
-                    WebServiceObserver.PagesBeingScraped.splice(i, 1);
+            for (var i = 0; i < PageScraperPages.PagesBeingScraped.length; i++) {
+                if (PageScraperPages.PagesBeingScraped[i].ID === value) {
+                    PageScraperPages.PagesBeingScraped.splice(i, 1);
                     break;
                 }
             }
 
-            $rootScope.$broadcast("webservice")
+            $rootScope.$broadcast("PageScrapingPages")
           
         },
-        GetWebService: function () {
-            return WebServiceObserver;
+        GetPageScrapingService: function () {
+            return PageScraperPages;
+        },
+        AddPageScrapingErrors: function (value) {
+            PageScraperErrors.PageErrors.push(value);
+            $rootScope.$broadcast("PageScrapingErrors");
+        },
+        GetPageScrapingErrors: function () {
+            return PageScraperErrors;
         }
     }
 }]);

@@ -21,7 +21,7 @@
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-user"></i>
                                             </span>
-                                            <input class="form-control" placeholder="Email Address" name="email" type="email" autofocus>
+                                            <input class="form-control" ng-model="UserName" placeholder="User Name" name="UserName" type="text" autofocus>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -29,7 +29,7 @@
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-lock"></i>
                                             </span>
-                                            <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                            <input class="form-control" ng-model="password" placeholder="Password" name="password" type="password" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -37,11 +37,11 @@
                                             <span class="input-group-addon">
                                                 <i class="glyphicon glyphicon-lock"></i>
                                             </span>
-                                            <input class="form-control" placeholder="Confirm Password" name="password" type="password" value="">
+                                            <input class="form-control" ng-model="confirmPassword" placeholder="Confirm Password" name="ConfirmPassword" type="password" value="">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="button" class="btn btn-lg btn-primary btn-block" value="Sign in">
+                                        <input type="button" class="btn btn-lg btn-primary btn-block" ng-click="Register()" value="Register">
                                     </div>
                                 </div>
                             </div>

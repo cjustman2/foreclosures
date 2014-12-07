@@ -1,11 +1,11 @@
-﻿myApp.controller('Navigation', ['$scope', '$http', '$rootScope','UserService', 'WebService', function ($scope, $http,$rootScope, UserService, WebService) {
+﻿myApp.controller('Navigation', ['$scope', '$http', '$rootScope','UserService', 'PageScrapingService', function ($scope, $http,$rootScope, UserService, PageScrapingService) {
 
     $scope.User = {};
-    $scope.WebService = WebService.GetWebService();
+    $scope.PageScraper = PageScrapingService.GetPageScrapingService();
     $scope.isShown = false;
 
 
-    $scope.ShowWebServiceDiv = function () {
+    $scope.ShowPageScrapingDiv = function () {
         $scope.isShown = $scope.isShown == true ? false : true;
     }
 
@@ -14,9 +14,9 @@
        
     });
 
-    $rootScope.$on("webservice", function () {
-        console.log($scope.WebService);
-        $scope.WebService = WebService.GetWebService();
+    $rootScope.$on("PageScrapingPages", function () {
+        console.log($scope.PageScraper);
+        $scope.PageScraper = PageScrapingService.GetPageScrapingService();
         
     });
 

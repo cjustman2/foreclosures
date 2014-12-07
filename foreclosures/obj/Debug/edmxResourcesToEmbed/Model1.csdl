@@ -7,43 +7,11 @@
     <Property Name="CountyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CountyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="SiteAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="County" ToRole="Listing" />
     <Property Name="CityCenter" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="Listing">
-    <Key>
-      <PropertyRef Name="ListingID" />
-    </Key>
-    <Property Name="ListingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ListingAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="CountyID" Type="Int32" />
-    <NavigationProperty Name="County" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="Listing" ToRole="County" />
-    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="BeenRemoved" Type="Boolean" />
-    <Property Name="IsNew" Type="Boolean" />
-    <Property Name="ScopeOfWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="PDFLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="zipcode" Type="Double" />
-    <Property Name="additionalInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="bedrooms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="baths" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="cityId" Type="Int32" />
-    <Property Name="attributeId" Type="Int32" />
-    <NavigationProperty Name="Attribute" Relationship="ForeclosuresModel.FK_Listing_Attributes" FromRole="Listing" ToRole="Attribute" />
-    <Property Name="saleDate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="County" ToRole="Listing" />
   </EntityType>
   <EntityContainer Name="ForeclosuresEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Counties" EntityType="Self.County" />
-    <EntitySet Name="Listings" EntityType="Self.Listing" />
-    <AssociationSet Name="FK_Listing_County" Association="ForeclosuresModel.FK_Listing_County">
-      <End Role="County" EntitySet="Counties" />
-      <End Role="Listing" EntitySet="Listings" />
-    </AssociationSet>
     <FunctionImport Name="Batch_Listing_Delete">
       <Parameter Name="CountyID" Mode="In" Type="Int32" />
     </FunctionImport>
@@ -51,26 +19,86 @@
       <Parameter Name="CountyID" Mode="In" Type="Int32" />
     </FunctionImport>
     <EntitySet Name="zipcodes_" EntityType="ForeclosuresModel.zipcodes_" />
-    <EntitySet Name="Attributes" EntityType="ForeclosuresModel.Attribute" />
     <EntitySet Name="Polygons" EntityType="ForeclosuresModel.Polygon" />
     <EntitySet Name="Cities" EntityType="ForeclosuresModel.City" />
-    <AssociationSet Name="FK_Listing_Attributes" Association="ForeclosuresModel.FK_Listing_Attributes">
-      <End Role="Attribute" EntitySet="Attributes" />
+    <EntitySet Name="C__MigrationHistory" EntityType="ForeclosuresModel.C__MigrationHistory" />
+    <EntitySet Name="aspnet_Applications" EntityType="ForeclosuresModel.aspnet_Applications" />
+    <EntitySet Name="aspnet_Membership" EntityType="ForeclosuresModel.aspnet_Membership" />
+    <EntitySet Name="aspnet_Paths" EntityType="ForeclosuresModel.aspnet_Paths" />
+    <EntitySet Name="aspnet_PersonalizationAllUsers" EntityType="ForeclosuresModel.aspnet_PersonalizationAllUsers" />
+    <EntitySet Name="aspnet_PersonalizationPerUser" EntityType="ForeclosuresModel.aspnet_PersonalizationPerUser" />
+    <EntitySet Name="aspnet_Profile" EntityType="ForeclosuresModel.aspnet_Profile" />
+    <EntitySet Name="aspnet_Roles" EntityType="ForeclosuresModel.aspnet_Roles" />
+    <EntitySet Name="aspnet_SchemaVersions" EntityType="ForeclosuresModel.aspnet_SchemaVersions" />
+    <EntitySet Name="aspnet_Users" EntityType="ForeclosuresModel.aspnet_Users" />
+    <EntitySet Name="aspnet_WebEvent_Events" EntityType="ForeclosuresModel.aspnet_WebEvent_Events" />
+    <EntitySet Name="AspNetRoles" EntityType="ForeclosuresModel.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="ForeclosuresModel.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="ForeclosuresModel.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="ForeclosuresModel.AspNetUser" />
+    <EntitySet Name="CountyListingTypes" EntityType="ForeclosuresModel.CountyListingType" />
+    <AssociationSet Name="FK__aspnet_Me__Appli__29221CFB" Association="ForeclosuresModel.FK__aspnet_Me__Appli__29221CFB">
+      <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
+      <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Pa__Appli__5AB9788F" Association="ForeclosuresModel.FK__aspnet_Pa__Appli__5AB9788F">
+      <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
+      <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Ro__Appli__47A6A41B" Association="ForeclosuresModel.FK__aspnet_Ro__Appli__47A6A41B">
+      <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
+      <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Us__Appli__18EBB532" Association="ForeclosuresModel.FK__aspnet_Us__Appli__18EBB532">
+      <End Role="aspnet_Applications" EntitySet="aspnet_Applications" />
+      <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Me__UserI__2A164134" Association="ForeclosuresModel.FK__aspnet_Me__UserI__2A164134">
+      <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+      <End Role="aspnet_Membership" EntitySet="aspnet_Membership" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Pe__PathI__607251E5" Association="ForeclosuresModel.FK__aspnet_Pe__PathI__607251E5">
+      <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
+      <End Role="aspnet_PersonalizationAllUsers" EntitySet="aspnet_PersonalizationAllUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Pe__PathI__6442E2C9" Association="ForeclosuresModel.FK__aspnet_Pe__PathI__6442E2C9">
+      <End Role="aspnet_Paths" EntitySet="aspnet_Paths" />
+      <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Pe__UserI__65370702" Association="ForeclosuresModel.FK__aspnet_Pe__UserI__65370702">
+      <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+      <End Role="aspnet_PersonalizationPerUser" EntitySet="aspnet_PersonalizationPerUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK__aspnet_Pr__UserI__3E1D39E1" Association="ForeclosuresModel.FK__aspnet_Pr__UserI__3E1D39E1">
+      <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+      <End Role="aspnet_Profile" EntitySet="aspnet_Profile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" Association="ForeclosuresModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ForeclosuresModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="aspnet_UsersInRoles" Association="ForeclosuresModel.aspnet_UsersInRoles">
+      <End Role="aspnet_Roles" EntitySet="aspnet_Roles" />
+      <End Role="aspnet_Users" EntitySet="aspnet_Users" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="ForeclosuresModel.AspNetUserRoles">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+    </AssociationSet>
+    <EntitySet Name="Listings" EntityType="ForeclosuresModel.Listing" />
+    <AssociationSet Name="FK_Listing_County" Association="ForeclosuresModel.FK_Listing_County">
+      <End Role="County" EntitySet="Counties" />
+      <End Role="Listing" EntitySet="Listings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Listing_CountyListingTypes" Association="ForeclosuresModel.FK_Listing_CountyListingTypes">
+      <End Role="CountyListingType" EntitySet="CountyListingTypes" />
       <End Role="Listing" EntitySet="Listings" />
     </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_Listing_County">
-    <End Type="ForeclosuresModel.County" Role="County" Multiplicity="0..1" />
-    <End Type="ForeclosuresModel.Listing" Role="Listing" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="County">
-        <PropertyRef Name="CountyID" />
-      </Principal>
-      <Dependent Role="Listing">
-        <PropertyRef Name="CountyID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="zipcodes_">
     <Key>
       <PropertyRef Name="Zipcode" />
@@ -97,16 +125,6 @@
     <Property Name="TotalWages" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
   </EntityType>
-  <EntityType Name="Attribute">
-    <Key>
-      <PropertyRef Name="attributeId" />
-    </Key>
-    <Property Name="attributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="attributeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_Attributes" FromRole="Attribute" ToRole="Listing" />
-    <Property Name="typeId" Type="Int32" />
-    <Property Name="displayOrder" Type="Int32" />
-  </EntityType>
   <EntityType Name="Polygon">
     <Key>
       <PropertyRef Name="polygonId" />
@@ -132,15 +150,403 @@
     <Property Name="cityName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="countyId" Type="Int32" />
   </EntityType>
-  <Association Name="FK_Listing_Attributes">
-    <End Type="ForeclosuresModel.Attribute" Role="Attribute" Multiplicity="0..1" />
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="aspnet_Applications">
+    <Key>
+      <PropertyRef Name="ApplicationId" />
+    </Key>
+    <Property Name="ApplicationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LoweredApplicationName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="aspnet_Membership" Relationship="ForeclosuresModel.FK__aspnet_Me__Appli__29221CFB" FromRole="aspnet_Applications" ToRole="aspnet_Membership" />
+    <NavigationProperty Name="aspnet_Paths" Relationship="ForeclosuresModel.FK__aspnet_Pa__Appli__5AB9788F" FromRole="aspnet_Applications" ToRole="aspnet_Paths" />
+    <NavigationProperty Name="aspnet_Roles" Relationship="ForeclosuresModel.FK__aspnet_Ro__Appli__47A6A41B" FromRole="aspnet_Applications" ToRole="aspnet_Roles" />
+    <NavigationProperty Name="aspnet_Users" Relationship="ForeclosuresModel.FK__aspnet_Us__Appli__18EBB532" FromRole="aspnet_Applications" ToRole="aspnet_Users" />
+  </EntityType>
+  <EntityType Name="aspnet_Membership">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+    <Property Name="UserId" Type="Guid" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="PasswordFormat" Type="Int32" Nullable="false" />
+    <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="MobilePIN" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LoweredEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="PasswordQuestion" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="PasswordAnswer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+    <Property Name="IsLockedOut" Type="Boolean" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastLoginDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastPasswordChangedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LastLockoutDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FailedPasswordAttemptCount" Type="Int32" Nullable="false" />
+    <Property Name="FailedPasswordAttemptWindowStart" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FailedPasswordAnswerAttemptCount" Type="Int32" Nullable="false" />
+    <Property Name="FailedPasswordAnswerAttemptWindowStart" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="aspnet_Applications" Relationship="ForeclosuresModel.FK__aspnet_Me__Appli__29221CFB" FromRole="aspnet_Membership" ToRole="aspnet_Applications" />
+    <NavigationProperty Name="aspnet_Users" Relationship="ForeclosuresModel.FK__aspnet_Me__UserI__2A164134" FromRole="aspnet_Membership" ToRole="aspnet_Users" />
+  </EntityType>
+  <EntityType Name="aspnet_Paths">
+    <Key>
+      <PropertyRef Name="PathId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+    <Property Name="PathId" Type="Guid" Nullable="false" />
+    <Property Name="Path" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LoweredPath" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="aspnet_Applications" Relationship="ForeclosuresModel.FK__aspnet_Pa__Appli__5AB9788F" FromRole="aspnet_Paths" ToRole="aspnet_Applications" />
+    <NavigationProperty Name="aspnet_PersonalizationAllUsers" Relationship="ForeclosuresModel.FK__aspnet_Pe__PathI__607251E5" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationAllUsers" />
+    <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="ForeclosuresModel.FK__aspnet_Pe__PathI__6442E2C9" FromRole="aspnet_Paths" ToRole="aspnet_PersonalizationPerUser" />
+  </EntityType>
+  <EntityType Name="aspnet_PersonalizationAllUsers">
+    <Key>
+      <PropertyRef Name="PathId" />
+    </Key>
+    <Property Name="PathId" Type="Guid" Nullable="false" />
+    <Property Name="PageSettings" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="aspnet_Paths" Relationship="ForeclosuresModel.FK__aspnet_Pe__PathI__607251E5" FromRole="aspnet_PersonalizationAllUsers" ToRole="aspnet_Paths" />
+  </EntityType>
+  <EntityType Name="aspnet_PersonalizationPerUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="PathId" Type="Guid" />
+    <Property Name="UserId" Type="Guid" />
+    <Property Name="PageSettings" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="aspnet_Paths" Relationship="ForeclosuresModel.FK__aspnet_Pe__PathI__6442E2C9" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Paths" />
+    <NavigationProperty Name="aspnet_Users" Relationship="ForeclosuresModel.FK__aspnet_Pe__UserI__65370702" FromRole="aspnet_PersonalizationPerUser" ToRole="aspnet_Users" />
+  </EntityType>
+  <EntityType Name="aspnet_Profile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Guid" Nullable="false" />
+    <Property Name="PropertyNames" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PropertyValuesString" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PropertyValuesBinary" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="aspnet_Users" Relationship="ForeclosuresModel.FK__aspnet_Pr__UserI__3E1D39E1" FromRole="aspnet_Profile" ToRole="aspnet_Users" />
+  </EntityType>
+  <EntityType Name="aspnet_Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+    <Property Name="RoleId" Type="Guid" Nullable="false" />
+    <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LoweredRoleName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="aspnet_Applications" Relationship="ForeclosuresModel.FK__aspnet_Ro__Appli__47A6A41B" FromRole="aspnet_Roles" ToRole="aspnet_Applications" />
+    <NavigationProperty Name="aspnet_Users" Relationship="ForeclosuresModel.aspnet_UsersInRoles" FromRole="aspnet_Roles" ToRole="aspnet_Users" />
+  </EntityType>
+  <EntityType Name="aspnet_SchemaVersions">
+    <Key>
+      <PropertyRef Name="Feature" />
+      <PropertyRef Name="CompatibleSchemaVersion" />
+    </Key>
+    <Property Name="Feature" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="CompatibleSchemaVersion" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="IsCurrentVersion" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="aspnet_Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+    <Property Name="UserId" Type="Guid" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LoweredUserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="MobileAlias" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+    <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
+    <Property Name="LastActivityDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="aspnet_Applications" Relationship="ForeclosuresModel.FK__aspnet_Us__Appli__18EBB532" FromRole="aspnet_Users" ToRole="aspnet_Applications" />
+    <NavigationProperty Name="aspnet_Membership" Relationship="ForeclosuresModel.FK__aspnet_Me__UserI__2A164134" FromRole="aspnet_Users" ToRole="aspnet_Membership" />
+    <NavigationProperty Name="aspnet_PersonalizationPerUser" Relationship="ForeclosuresModel.FK__aspnet_Pe__UserI__65370702" FromRole="aspnet_Users" ToRole="aspnet_PersonalizationPerUser" />
+    <NavigationProperty Name="aspnet_Profile" Relationship="ForeclosuresModel.FK__aspnet_Pr__UserI__3E1D39E1" FromRole="aspnet_Users" ToRole="aspnet_Profile" />
+    <NavigationProperty Name="aspnet_Roles" Relationship="ForeclosuresModel.aspnet_UsersInRoles" FromRole="aspnet_Users" ToRole="aspnet_Roles" />
+  </EntityType>
+  <EntityType Name="aspnet_WebEvent_Events">
+    <Key>
+      <PropertyRef Name="EventId" />
+    </Key>
+    <Property Name="EventId" Type="String" Nullable="false" MaxLength="32" FixedLength="true" Unicode="false" />
+    <Property Name="EventTimeUtc" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EventTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EventType" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EventSequence" Type="Decimal" Nullable="false" Precision="19" Scale="0" />
+    <Property Name="EventOccurrence" Type="Decimal" Nullable="false" Precision="19" Scale="0" />
+    <Property Name="EventCode" Type="Int32" Nullable="false" />
+    <Property Name="EventDetailCode" Type="Int32" Nullable="false" />
+    <Property Name="Message" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+    <Property Name="ApplicationPath" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="ApplicationVirtualPath" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="MachineName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="RequestUrl" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+    <Property Name="ExceptionType" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUsers" Relationship="ForeclosuresModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ForeclosuresModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+    </Key>
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ForeclosuresModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="ForeclosuresModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="ForeclosuresModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="ForeclosuresModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+  </EntityType>
+  <EntityType Name="CountyListingType">
+    <Key>
+      <PropertyRef Name="typeId" />
+    </Key>
+    <Property Name="typeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="typeName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="parentId" Type="Int32" />
+    <Property Name="displayOrder" Type="Int32" />
+    <NavigationProperty Name="Listings" Relationship="ForeclosuresModel.FK_Listing_CountyListingTypes" FromRole="CountyListingType" ToRole="Listing" />
+  </EntityType>
+  <Association Name="FK__aspnet_Me__Appli__29221CFB">
+    <End Type="ForeclosuresModel.aspnet_Applications" Role="aspnet_Applications" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Membership" Role="aspnet_Membership" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="aspnet_Membership">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Pa__Appli__5AB9788F">
+    <End Type="ForeclosuresModel.aspnet_Applications" Role="aspnet_Applications" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Paths" Role="aspnet_Paths" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="aspnet_Paths">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Ro__Appli__47A6A41B">
+    <End Type="ForeclosuresModel.aspnet_Applications" Role="aspnet_Applications" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Roles" Role="aspnet_Roles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="aspnet_Roles">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Us__Appli__18EBB532">
+    <End Type="ForeclosuresModel.aspnet_Applications" Role="aspnet_Applications" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Users" Role="aspnet_Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Applications">
+        <PropertyRef Name="ApplicationId" />
+      </Principal>
+      <Dependent Role="aspnet_Users">
+        <PropertyRef Name="ApplicationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Me__UserI__2A164134">
+    <End Type="ForeclosuresModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Membership" Role="aspnet_Membership" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="aspnet_Membership">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Pe__PathI__607251E5">
+    <End Type="ForeclosuresModel.aspnet_Paths" Role="aspnet_Paths" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_PersonalizationAllUsers" Role="aspnet_PersonalizationAllUsers" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Paths">
+        <PropertyRef Name="PathId" />
+      </Principal>
+      <Dependent Role="aspnet_PersonalizationAllUsers">
+        <PropertyRef Name="PathId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Pe__PathI__6442E2C9">
+    <End Type="ForeclosuresModel.aspnet_Paths" Role="aspnet_Paths" Multiplicity="0..1" />
+    <End Type="ForeclosuresModel.aspnet_PersonalizationPerUser" Role="aspnet_PersonalizationPerUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Paths">
+        <PropertyRef Name="PathId" />
+      </Principal>
+      <Dependent Role="aspnet_PersonalizationPerUser">
+        <PropertyRef Name="PathId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Pe__UserI__65370702">
+    <End Type="ForeclosuresModel.aspnet_Users" Role="aspnet_Users" Multiplicity="0..1" />
+    <End Type="ForeclosuresModel.aspnet_PersonalizationPerUser" Role="aspnet_PersonalizationPerUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="aspnet_PersonalizationPerUser">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__aspnet_Pr__UserI__3E1D39E1">
+    <End Type="ForeclosuresModel.aspnet_Users" Role="aspnet_Users" Multiplicity="1" />
+    <End Type="ForeclosuresModel.aspnet_Profile" Role="aspnet_Profile" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="aspnet_Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="aspnet_Profile">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_User_Id">
+    <End Type="ForeclosuresModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ForeclosuresModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Type="ForeclosuresModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ForeclosuresModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="aspnet_UsersInRoles">
+    <End Type="ForeclosuresModel.aspnet_Roles" Role="aspnet_Roles" Multiplicity="*" />
+    <End Type="ForeclosuresModel.aspnet_Users" Role="aspnet_Users" Multiplicity="*" />
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Type="ForeclosuresModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+    <End Type="ForeclosuresModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Listing">
+    <Key>
+      <PropertyRef Name="ListingID" />
+    </Key>
+    <Property Name="ListingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ListingAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="CountyID" Type="Int32" />
+    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BeenRemoved" Type="Boolean" />
+    <Property Name="IsNew" Type="Boolean" />
+    <Property Name="ScopeOfWork" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PDFLink" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="zipcode" Type="Double" />
+    <Property Name="cityId" Type="Int32" />
+    <Property Name="additionalInfo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="propertyType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bedrooms" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="baths" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="typeId" Type="Int32" />
+    <Property Name="saleDate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="County" Relationship="ForeclosuresModel.FK_Listing_County" FromRole="Listing" ToRole="County" />
+    <NavigationProperty Name="CountyListingType" Relationship="ForeclosuresModel.FK_Listing_CountyListingTypes" FromRole="Listing" ToRole="CountyListingType" />
+  </EntityType>
+  <Association Name="FK_Listing_County">
+    <End Type="ForeclosuresModel.County" Role="County" Multiplicity="0..1" />
     <End Type="ForeclosuresModel.Listing" Role="Listing" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Attribute">
-        <PropertyRef Name="attributeId" />
+      <Principal Role="County">
+        <PropertyRef Name="CountyID" />
       </Principal>
       <Dependent Role="Listing">
-        <PropertyRef Name="attributeId" />
+        <PropertyRef Name="CountyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Listing_CountyListingTypes">
+    <End Type="ForeclosuresModel.CountyListingType" Role="CountyListingType" Multiplicity="0..1" />
+    <End Type="ForeclosuresModel.Listing" Role="Listing" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CountyListingType">
+        <PropertyRef Name="typeId" />
+      </Principal>
+      <Dependent Role="Listing">
+        <PropertyRef Name="typeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

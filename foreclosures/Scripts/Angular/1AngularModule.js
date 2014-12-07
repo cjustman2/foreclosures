@@ -14,7 +14,7 @@ myApp.config(['$routeProvider',function ($routeProvider) {
         }).
     when('/register', {
         templateUrl: 'Pages/register.html',
-        controller: 'RegisterController'
+        controller: 'AccountController'
     }).
     when('/admin', {
         templateUrl: 'Pages/admin.html',

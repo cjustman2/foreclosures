@@ -18,14 +18,14 @@ namespace foreclosures.Controllers
 
             foreach (County county in counties)
             {
-                List<Attribute> attsList = db.Attributes.Where(x => x.typeId == county.CountyID).OrderBy(x => x.displayOrder).ToList();
+                List<CountyListingType> attsList = db.CountyListingTypes.Where(x => x.typeId == county.CountyID).OrderBy(x => x.displayOrder).ToList();
 
                 Dictionary<string, string> atts = new Dictionary<string, string>();
 
-                foreach (Attribute att in attsList)
+                foreach (CountyListingType type in attsList)
                 {
 
-                    atts.Add(att.attributeId.ToString(), att.attributeName);
+                    atts.Add(type.typeId.ToString(), type.typeName);
                 }
 
                 hierarchy.Add(county.CountyName, atts);

@@ -27,7 +27,7 @@ namespace foreclosures.Services
 
                     if ((int)webResponse.StatusCode >= 300 && (int)webResponse.StatusCode <= 399)
                     {
-                        throw new RedirectedException("web page redirected");
+                        throw new RedirectedException("Redirected");
                     }
                     else
                     {
@@ -49,5 +49,7 @@ namespace foreclosures.Services
 
             return responseData;
         }
+
+
     }
 }

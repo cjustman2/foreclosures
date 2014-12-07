@@ -40,12 +40,17 @@ namespace foreclosures.Controllers
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult Login(LoginViewModel model, string returnUrl)
+        public async Task<JsonResult> Login(LoginViewModel model, string returnUrl)
         {
+           var user = await UserManager.FindAsync(model.UserName, model.Password);
+        if (user != null)
+        {
+            await SignInAsync(user, false);
+            
+        }
 
-
-
-            return Json(new { Role = "Admin", LoggedIn = true});
+            List<IdentityUserRole> roles = user.Roles.ToList();
+            return Json(new { Role = roles[0].RoleId, UserName = user.UserName, LoggedIn = user == null ? false : true });
         }
 
         //
@@ -60,7 +65,6 @@ namespace foreclosures.Controllers
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -70,7 +74,9 @@ namespace foreclosures.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+
+
+                  //  return RedirectToAction("Index", "Home");
                 }
                 else
                 {

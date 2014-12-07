@@ -41,13 +41,13 @@ namespace foreclosures.Controllers
         {
             var db = new ForeclosuresEntities();
 
-            var attributes = db.Attributes.Where(x => x.typeId == ID).Select(x => new{ AttributeID = x.attributeId, AttributeName = x.attributeName, x.displayOrder}).OrderBy(x => x.displayOrder).ToList();
+            var types = db.CountyListingTypes.Where(x => x.typeId == ID).Select(x => new{ AttributeID = x.typeId, AttributeName = x.typeName, x.displayOrder}).OrderBy(x => x.displayOrder).ToList();
 
             db.Database.Connection.Close();
             db.Dispose();
 
 
-            return Json(new { Attributes = attributes }, JsonRequestBehavior.DenyGet);
+            return Json(new { Attributes = types }, JsonRequestBehavior.DenyGet);
         }
      
 	}

@@ -1,7 +1,14 @@
 ﻿
-myApp.controller('AdminController', ['$scope', '$http','WebService', function ($scope, $http,WebService) {
+myApp.controller('AdminController', ['$scope', '$http','$rootScope','PageScrapingService', function ($scope, $http,$rootScope,PageScrapingService) {
     $scope.locationHierarchy = [];
+    $scope.PageScraperErrors = PageScrapingService.GetPageScrapingErrors();
 
+
+    $rootScope.$on("PageScrapingErrors", function () {
+        console.log($scope.PageScraperErrors);
+        $scope.PageScraperErrors = PageScrapingService.GetPageScrapingErrors();
+
+    });
 
     $http.get('/Admin/LocationHierarchy').
 success(function (data, status, headers, config) {
@@ -18,17 +25,17 @@ error(function (data, status, headers, config) {
 
 
 
-    $scope.Scrape = function (key) {
+    $scope.Scrape = function (key,value) {
    
-        WebService.AddWebService({ ID: key });
+        PageScrapingService.AddPageScrapingService({ ID: key });
       
-        PageScrape(key);
+        PageScrape(key,value);
       
     }
 
 
     var meter = '<div id="" class="meterHolder"><h4></h4><div class="meter nostripes"><span class="orange" style=""></span></div></div>';
-    function PageScrape(id) {
+    function PageScrape(id,name) {
         // var target = document.getElementById('inDIV');
         //var spinner = new Spinner().spin(target);
 
@@ -44,7 +51,7 @@ error(function (data, status, headers, config) {
 
                 if (result.IsStarted) {
                     $(meter).attr('id', id).appendTo('#meterHolder');
-                    $('#' + id + ' h4').html(county);
+                    $('#' + id + ' h4').html(name);
 
                     GetProgress(id);
                 }
@@ -86,13 +93,19 @@ error(function (data, status, headers, config) {
                     setTimeout(function () {
                        
                         $('#' + id).remove();
-                        WebService.RemoveWebService(id);
+                        PageScrapingService.RemovePageScrapingService(id);
                         $scope.$apply();
                     }, 1000);
                 }
-                for (var i = 0; i < result.Errors.length; i++) {
-                    $('<p style="color:red">' + result.Errors[i] + '</p>').appendTo('#errors');
+
+                if (result.Errors.length > 0) {
+                
+                   PageScrapingService.AddPageScrapingErrors(result.Errors);
+                    $scope.$apply();
                 }
+               
+
+               // console.log($scope.PageScraperErrors);
             }
         });
     }
